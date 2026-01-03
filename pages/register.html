@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dayflow HRMS - Create your account">
+    <meta name="description" content="Dayflow HRMS - Employee Registration">
     <title>Register - Dayflow HRMS</title>
     <style>
         * {
@@ -14,239 +14,300 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #E0E7FF 0%, #E0F2FE 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
         }
         
-        /* Additional custom styles for register page */
-        .register-container {
-            min-height: 100vh;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-section {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
         }
         
-        .register-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveBackground 20s linear infinite;
-        }
-        
-        @keyframes moveBackground {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        .register-card {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 440px;
-            margin: 0 1rem;
-        }
-        
-        .logo-container {
-            text-align: center;
-            margin-bottom: 2rem;
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.75rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         
         .logo-text {
             font-size: 2rem;
             font-weight: 700;
-            color: #2563EB;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            color: #1E40AF;
         }
         
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.5rem;
+        .subtitle {
+            color: #64748B;
+            font-size: 1rem;
         }
         
         .card {
             background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
             padding: 2rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .form-group {
             margin-bottom: 1.5rem;
         }
         
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #F1F5F9;
+        }
+        
+        .card-header svg {
+            width: 24px;
+            height: 24px;
+            color: #3B82F6;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1E293B;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
         .label {
-            display: block;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #374151;
+            color: #475569;
             margin-bottom: 0.5rem;
         }
         
-        .input, .select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: all 0.2s;
+        .label.required::after {
+            content: '*';
+            color: #EF4444;
+            margin-left: 0.25rem;
         }
         
-        .input:focus, .select:focus {
-            outline: none;
-            border-color: #2563EB;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .input-error {
-            border-color: #DC2626;
-        }
-        
-        .input-icon {
+        .input-wrapper {
             position: relative;
         }
         
-        .input-icon input {
-            padding-left: 3rem;
-        }
-        
-        .input-icon svg {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            color: #6B7280;
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #6B7280;
-            transition: color 0.2s;
-        }
-        
-        .password-toggle:hover {
-            color: #2563EB;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-size: 1rem;
-        }
-        
-        .btn-primary {
-            background: #2563EB;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #1D4ED8;
-        }
-        
-        .w-full {
+        .input, .select, .textarea {
             width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #1E293B;
+            transition: all 0.2s;
+            background: white;
         }
         
-        .mb-4 {
-            margin-bottom: 1rem;
+        .input:focus, .select:focus, .textarea:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
-        .mt-2 {
-            margin-top: 0.5rem;
+        .input.error, .select.error {
+            border-color: #EF4444;
         }
         
-        .text-center {
-            text-align: center;
-        }
-        
-        .text-sm {
-            font-size: 0.875rem;
-        }
-        
-        .text-text-secondary {
-            color: #6B7280;
-        }
-        
-        .text-primary {
-            color: #2563EB;
-        }
-        
-        .text-primary-700 {
-            color: #1D4ED8;
-        }
-        
-        .font-medium {
-            font-weight: 500;
-        }
-        
-        .hover\:text-primary-700:hover {
-            color: #1D4ED8;
-        }
-        
-        .transition-colors {
-            transition: color 0.2s;
-        }
-        
-        .trust-badges {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #E5E7EB;
-        }
-        
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: #6B7280;
-        }
-        
-        .trust-badge svg {
-            width: 16px;
-            height: 16px;
-            color: #10B981;
+        .textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
         }
         
         .error-message {
             display: none;
-            color: #DC2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+            color: #EF4444;
+            font-size: 0.8rem;
+            margin-top: 0.375rem;
         }
         
         .error-message.show {
             display: block;
+        }
+        
+        .photo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 2px dashed #CBD5E1;
+            border-radius: 12px;
+            background: #F8FAFC;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .photo-upload:hover {
+            border-color: #3B82F6;
+            background: #EFF6FF;
+        }
+        
+        .photo-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .photo-preview.show {
+            display: block;
+        }
+        
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .upload-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .upload-text {
+            text-align: center;
+        }
+        
+        .upload-text strong {
+            color: #3B82F6;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .upload-text small {
+            color: #64748B;
+            font-size: 0.8rem;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #3B82F6;
+        }
+        
+        .radio-option label {
+            cursor: pointer;
+            color: #475569;
+        }
+        
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .btn-secondary:hover {
+            background: #F8FAFC;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #64748B;
+            font-size: 0.95rem;
+        }
+        
+        .login-link a {
+            color: #3B82F6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
         }
         
         .loading-overlay {
@@ -256,7 +317,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 9999;
             align-items: center;
             justify-content: center;
@@ -267,12 +328,12 @@
         }
         
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #2563EB;
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
         
         @keyframes spin {
@@ -282,17 +343,17 @@
         
         .toast {
             position: fixed;
-            top: 1rem;
-            right: 1rem;
+            top: 2rem;
+            right: 2rem;
             background: white;
             padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
             display: none;
             align-items: center;
             gap: 0.75rem;
             z-index: 10000;
-            min-width: 300px;
+            min-width: 320px;
             animation: slideIn 0.3s ease-out;
         }
         
@@ -316,12 +377,13 @@
         }
         
         .toast.error {
-            border-left: 4px solid #DC2626;
+            border-left: 4px solid #EF4444;
         }
         
         .toast-icon {
             width: 24px;
             height: 24px;
+            flex-shrink: 0;
         }
         
         .toast-icon.success {
@@ -329,26 +391,29 @@
         }
         
         .toast-icon.error {
-            color: #DC2626;
+            color: #EF4444;
         }
         
-        @media (max-width: 640px) {
-            .register-card {
-                margin: 1rem;
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
             }
             
-            .logo-text {
-                font-size: 1.5rem;
+            .form-grid {
+                grid-template-columns: 1fr;
             }
             
-            .trust-badges {
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .form-actions {
                 flex-direction: column;
-                gap: 0.5rem;
             }
             
             .toast {
-                right: 0.5rem;
-                left: 0.5rem;
+                right: 1rem;
+                left: 1rem;
                 min-width: auto;
             }
         }
@@ -368,161 +433,333 @@
         <span id="toastMessage"></span>
     </div>
     
-    <!-- Register Container -->
-    <div class="register-container">
-        <div class="register-card">
-            <!-- Logo and Title -->
-            <div class="logo-container">
-                <div class="logo-text">
-                    <div class="logo-icon">D</div>
-                    Dayflow HRMS
-                </div>
-                <p class="text-text-secondary mt-2">Create your account to get started</p>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-icon">D</div>
+                <div class="logo-text">Dayflow HRMS</div>
             </div>
-            
-            <!-- Registration Form Card -->
+            <p class="subtitle">Complete your employee registration</p>
+        </div>
+        
+        <form id="registrationForm" novalidate>
+            <!-- Personal Information -->
             <div class="card">
-                <form id="registerForm" novalidate>
-                    <!-- Name Input -->
-                    <div class="form-group">
-                        <label for="name" class="label">Full Name</label>
-                        <div class="input-icon">
+                <div class="card-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <h2 class="card-title">Personal Information</h2>
+                </div>
+                
+                <!-- Profile Photo Upload -->
+                <div class="form-group full-width">
+                    <label class="label">Profile Photo</label>
+                    <div class="photo-upload" id="photoUpload">
+                        <img class="photo-preview" id="photoPreview" src="" alt="Profile Preview">
+                        <div class="upload-icon" id="uploadIcon">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
-                            <input 
-                                type="text" 
-                                id="name" 
-                                name="name" 
-                                class="input" 
-                                placeholder="John Doe"
-                                required
-                                autocomplete="name"
-                            >
                         </div>
-                        <div class="error-message" id="nameError">Please enter your full name</div>
+                        <div class="upload-text" id="uploadText">
+                            <strong>Click to upload photo</strong>
+                            <small>PNG, JPG or GIF (MAX. 2MB)</small>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="label required" for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="input" placeholder="John Doe" required>
+                        <div class="error-message" id="fullNameError">Please enter your full name</div>
                     </div>
                     
-                    <!-- Email Input -->
                     <div class="form-group">
-                        <label for="email" class="label">Email Address</label>
-                        <div class="input-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
-                            </svg>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                class="input" 
-                                placeholder="john.doe@company.com"
-                                required
-                                autocomplete="email"
-                            >
-                        </div>
+                        <label class="label required" for="email">Email Address</label>
+                        <input type="email" id="email" class="input" placeholder="john.doe@dayflow.com" required>
                         <div class="error-message" id="emailError">Please enter a valid email address</div>
                     </div>
                     
-                    <!-- Password Input -->
                     <div class="form-group">
-                        <label for="password" class="label">Password</label>
-                        <div class="input-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                class="input" 
-                                placeholder="Enter your password"
-                                required
-                                autocomplete="new-password"
-                            >
-                            <svg class="password-toggle" id="togglePassword" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                        </div>
-                        <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+                        <label class="label required" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="input" placeholder="+1 (555) 123-4567" required>
+                        <div class="error-message" id="phoneError">Please enter a valid phone number</div>
                     </div>
                     
-                    <!-- Role Selection -->
                     <div class="form-group">
-                        <label for="role" class="label">Select Role</label>
-                        <select id="role" name="role" class="select" required>
-                            <option value="employee">Employee</option>
-                            <option value="admin">Admin</option>
-                        </select>
+                        <label class="label required" for="dob">Date of Birth</label>
+                        <input type="date" id="dob" class="input" required>
+                        <div class="error-message" id="dobError">Please select your date of birth</div>
                     </div>
                     
-                    <!-- Register Button -->
-                    <button type="submit" class="btn btn-primary w-full mb-4">
-                        Create Account
-                    </button>
-                    
-                    <!-- Login Link -->
-                    <div class="text-center">
-                        <span class="text-sm text-text-secondary">Already have an account? </span>
-                        <a href="login.html" class="text-sm text-primary hover:text-primary-700 font-medium transition-colors">Sign In</a>
-                    </div>
-                    
-                    <!-- Trust Badges -->
-                    <div class="trust-badges">
-                        <div class="trust-badge">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                            </svg>
-                            <span>SSL Secured</span>
+                    <div class="form-group">
+                        <label class="label required">Gender</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="male" name="gender" value="Male" required>
+                                <label for="male">Male</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="female" name="gender" value="Female">
+                                <label for="female">Female</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="other" name="gender" value="Other">
+                                <label for="other">Other</label>
+                            </div>
                         </div>
-                        <div class="trust-badge">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                            <span>JWT Authentication</span>
-                        </div>
+                        <div class="error-message" id="genderError">Please select your gender</div>
                     </div>
-                </form>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="nationality">Nationality</label>
+                        <input type="text" id="nationality" class="input" placeholder="American" required>
+                        <div class="error-message" id="nationalityError">Please enter your nationality</div>
+                    </div>
+                </div>
             </div>
-        </div>
+            
+            <!-- Work Information -->
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <h2 class="card-title">Work Information</h2>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="label required" for="employeeId">Employee ID</label>
+                        <input type="text" id="employeeId" class="input" placeholder="EMP001" required>
+                        <div class="error-message" id="employeeIdError">Please enter employee ID</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="department">Department</label>
+                        <select id="department" class="select" required>
+                            <option value="">Select Department</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Operations">Operations</option>
+                        </select>
+                        <div class="error-message" id="departmentError">Please select a department</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="designation">Designation</label>
+                        <input type="text" id="designation" class="input" placeholder="Senior Developer" required>
+                        <div class="error-message" id="designationError">Please enter your designation</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="dateJoined">Date Joined</label>
+                        <input type="date" id="dateJoined" class="input" required>
+                        <div class="error-message" id="dateJoinedError">Please select date joined</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="employmentType">Employment Type</label>
+                        <select id="employmentType" class="select" required>
+                            <option value="">Select Type</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Intern">Intern</option>
+                        </select>
+                        <div class="error-message" id="employmentTypeError">Please select employment type</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="manager">Manager</label>
+                        <input type="text" id="manager" class="input" placeholder="Sarah Johnson" required>
+                        <div class="error-message" id="managerError">Please enter manager name</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact & Address -->
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <h2 class="card-title">Contact & Address</h2>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label class="label required" for="address">Address</label>
+                        <input type="text" id="address" class="input" placeholder="123 Main Street, Apt 4B" required>
+                        <div class="error-message" id="addressError">Please enter your address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="city">City</label>
+                        <input type="text" id="city" class="input" placeholder="New York" required>
+                        <div class="error-message" id="cityError">Please enter your city</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="state">State/Province</label>
+                        <input type="text" id="state" class="input" placeholder="NY" required>
+                        <div class="error-message" id="stateError">Please enter your state</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="zipCode">ZIP/Postal Code</label>
+                        <input type="text" id="zipCode" class="input" placeholder="10001" required>
+                        <div class="error-message" id="zipCodeError">Please enter your ZIP code</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="country">Country</label>
+                        <input type="text" id="country" class="input" placeholder="United States" required>
+                        <div class="error-message" id="countryError">Please enter your country</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Settings -->
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <h2 class="card-title">Security Settings</h2>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="label required" for="password">Password</label>
+                        <input type="password" id="password" class="input" placeholder="Enter password" required>
+                        <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label required" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="input" placeholder="Confirm password" required>
+                        <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="resetBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Reset Form
+                </button>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Complete Registration
+                </button>
+            </div>
+            
+            <!-- Login Link -->
+            <div class="login-link">
+                Already have an account? <a href="login.html">Sign In</a>
+            </div>
+        </form>
     </div>
     
     <script>
         // DOM Elements
-        const registerForm = document.getElementById('registerForm');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const roleSelect = document.getElementById('role');
-        const nameError = document.getElementById('nameError');
-        const emailError = document.getElementById('emailError');
-        const passwordError = document.getElementById('passwordError');
-        const togglePassword = document.getElementById('togglePassword');
+        const form = document.getElementById('registrationForm');
+        const photoUpload = document.getElementById('photoUpload');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const uploadIcon = document.getElementById('uploadIcon');
+        const uploadText = document.getElementById('uploadText');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const toast = document.getElementById('toast');
         const toastIcon = document.getElementById('toastIcon');
         const toastMessage = document.getElementById('toastMessage');
+        const resetBtn = document.getElementById('resetBtn');
         
-        // Password Toggle Functionality
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            // Toggle icon
-            if (type === 'password') {
-                this.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>';
-            } else {
-                this.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>';
+        // Photo Upload Handler
+        photoUpload.addEventListener('click', () => photoInput.click());
+        
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast('File size must be less than 2MB', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoPreview.src = e.target.result;
+                    photoPreview.classList.add('show');
+                    uploadIcon.style.display = 'none';
+                    uploadText.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
             }
         });
         
-        // Email Validation
+        // Validation Functions
         function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
         
-        // Show Toast Notification
+        function validatePhone(phone) {
+            return /^[\d\s\-\+\(\)]+$/.test(phone) && phone.replace(/\D/g, '').length >= 10;
+        }
+        
+        function validateField(input, errorId, validationFn, errorMsg) {
+            const error = document.getElementById(errorId);
+            const isValid = validationFn ? validationFn(input.value.trim()) : input.value.trim() !== '';
+            
+            if (!isValid) {
+                input.classList.add('error');
+                error.textContent = errorMsg || error.textContent;
+                error.classList.add('show');
+                return false;
+            } else {
+                input.classList.remove('error');
+                error.classList.remove('show');
+                return true;
+            }
+        }
+        
+        // Real-time Validation
+        document.getElementById('fullName').addEventListener('blur', function() {
+            validateField(this, 'fullNameError');
+        });
+        
+        document.getElementById('email').addEventListener('blur', function() {
+            validateField(this, 'emailError', validateEmail, 'Please enter a valid email address');
+        });
+        
+        document.getElementById('phone').addEventListener('blur', function() {
+            validateField(this, 'phoneError', validatePhone, 'Please enter a valid phone number');
+        });
+        
+        document.getElementById('password').addEventListener('blur', function() {
+            validateField(this, 'passwordError', (val) => val.length >= 8, 'Password must be at least 8 characters');
+        });
+        
+        document.getElementById('confirmPassword').addEventListener('blur', function() {
+            const password = document.getElementById('password').value;
+            validateField(this, 'confirmPasswordError', (val) => val === password, 'Passwords do not match');
+        });
+        
+        // Toast Notification
         function showToast(message, type = 'success') {
             toast.className = `toast ${type} show`;
             toastMessage.textContent = message;
@@ -537,119 +774,152 @@
             
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
         
-        // Form Validation
-        nameInput.addEventListener('blur', function() {
-            if (this.value.trim() === '') {
-                nameError.classList.add('show');
-                this.classList.add('input-error');
-            } else {
-                nameError.classList.remove('show');
-                this.classList.remove('input-error');
-            }
-        });
-        
-        emailInput.addEventListener('blur', function() {
-            if (!validateEmail(this.value)) {
-                emailError.classList.add('show');
-                this.classList.add('input-error');
-            } else {
-                emailError.classList.remove('show');
-                this.classList.remove('input-error');
-            }
-        });
-        
-        passwordInput.addEventListener('blur', function() {
-            if (this.value.trim().length < 6) {
-                passwordError.classList.add('show');
-                this.classList.add('input-error');
-            } else {
-                passwordError.classList.remove('show');
-                this.classList.remove('input-error');
+        // Form Reset
+        resetBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset the form? All data will be lost.')) {
+                form.reset();
+                photoPreview.classList.remove('show');
+                uploadIcon.style.display = 'flex';
+                uploadText.style.display = 'block';
+                document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.input, .select').forEach(el => el.classList.remove('error'));
+                showToast('Form has been reset', 'success');
             }
         });
         
         // Form Submit Handler
-        registerForm.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-            const role = roleSelect.value;
             let isValid = true;
             
-            // Validate name
-            if (name === '') {
-                nameError.classList.add('show');
-                nameInput.classList.add('input-error');
+            // Validate all fields
+            const validations = [
+                { id: 'fullName', errorId: 'fullNameError' },
+                { id: 'email', errorId: 'emailError', fn: validateEmail },
+                { id: 'phone', errorId: 'phoneError', fn: validatePhone },
+                { id: 'dob', errorId: 'dobError' },
+                { id: 'nationality', errorId: 'nationalityError' },
+                { id: 'employeeId', errorId: 'employeeIdError' },
+                { id: 'department', errorId: 'departmentError' },
+                { id: 'designation', errorId: 'designationError' },
+                { id: 'dateJoined', errorId: 'dateJoinedError' },
+                { id: 'employmentType', errorId: 'employmentTypeError' },
+                { id: 'manager', errorId: 'managerError' },
+                { id: 'address', errorId: 'addressError' },
+                { id: 'city', errorId: 'cityError' },
+                { id: 'state', errorId: 'stateError' },
+                { id: 'zipCode', errorId: 'zipCodeError' },
+                { id: 'country', errorId: 'countryError' },
+                { id: 'password', errorId: 'passwordError', fn: (val) => val.length >= 8 }
+            ];
+            
+            validations.forEach(validation => {
+                const input = document.getElementById(validation.id);
+                if (!validateField(input, validation.errorId, validation.fn)) {
+                    isValid = false;
+                }
+            });
+            
+            // Validate gender
+            const genderSelected = document.querySelector('input[name="gender"]:checked');
+            const genderError = document.getElementById('genderError');
+            if (!genderSelected) {
+                genderError.classList.add('show');
                 isValid = false;
             } else {
-                nameError.classList.remove('show');
-                nameInput.classList.remove('input-error');
+                genderError.classList.remove('show');
             }
             
-            // Validate email
-            if (!validateEmail(email)) {
-                emailError.classList.add('show');
-                emailInput.classList.add('input-error');
+            // Validate confirm password
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword');
+            if (!validateField(confirmPassword, 'confirmPasswordError', (val) => val === password, 'Passwords do not match')) {
                 isValid = false;
-            } else {
-                emailError.classList.remove('show');
-                emailInput.classList.remove('input-error');
-            }
-            
-            // Validate password
-            if (password.length < 6) {
-                passwordError.classList.add('show');
-                passwordInput.classList.add('input-error');
-                isValid = false;
-            } else {
-                passwordError.classList.remove('show');
-                passwordInput.classList.remove('input-error');
             }
             
             if (!isValid) {
+                showToast('Please fix all errors before submitting', 'error');
                 return;
             }
             
-            // Show loading overlay
+            // Collect form data
+            const formData = {
+                personalInfo: {
+                    fullName: document.getElementById('fullName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    dob: document.getElementById('dob').value,
+                    gender: genderSelected.value,
+                    nationality: document.getElementById('nationality').value.trim(),
+                    photo: photoPreview.src || null
+                },
+                workInfo: {
+                    employeeId: document.getElementById('employeeId').value.trim(),
+                    department: document.getElementById('department').value,
+                    designation: document.getElementById('designation').value.trim(),
+                    dateJoined: document.getElementById('dateJoined').value,
+                    employmentType: document.getElementById('employmentType').value,
+                    manager: document.getElementById('manager').value.trim()
+                },
+                contactInfo: {
+                    address: document.getElementById('address').value.trim(),
+                    city: document.getElementById('city').value.trim(),
+                    state: document.getElementById('state').value.trim(),
+                    zipCode: document.getElementById('zipCode').value.trim(),
+                    country: document.getElementById('country').value.trim()
+                },
+                security: {
+                    password: document.getElementById('password').value
+                },
+                registrationDate: new Date().toISOString()
+            };
+            
+            // Show loading
             loadingOverlay.classList.add('show');
             
             // Simulate API call
             setTimeout(() => {
-                // Create user object
-                const user = {
-                    name: name,
-                    email: email,
-                    password: password,
-                    role: role
-                };
+                // Store in memory (replace with actual API call)
+                const employees = JSON.parse(localStorage.getItem('employees') || '[]');
                 
-                // Store in localStorage
-                localStorage.setItem('registeredUser', JSON.stringify(user));
+                // Check if employee ID already exists
+                const existingEmployee = employees.find(emp => emp.workInfo.employeeId === formData.workInfo.employeeId);
+                if (existingEmployee) {
+                    loadingOverlay.classList.remove('show');
+                    showToast('Employee ID already exists!', 'error');
+                    return;
+                }
+                
+                // Check if email already exists
+                const existingEmail = employees.find(emp => emp.personalInfo.email === formData.personalInfo.email);
+                if (existingEmail) {
+                    loadingOverlay.classList.remove('show');
+                    showToast('Email already registered!', 'error');
+                    return;
+                }
+                
+                employees.push(formData);
+                localStorage.setItem('employees', JSON.stringify(employees));
                 
                 loadingOverlay.classList.remove('show');
-                
-                // Show success toast
                 showToast('Registration successful! Redirecting to login...', 'success');
                 
-                // Redirect to login page
+                // Redirect to login
                 setTimeout(() => {
                     window.location.href = 'login.html';
-                }, 1500);
-            }, 1500);
+                }, 2000);
+            }, 2000);
         });
         
         // Check if user is already logged in
         window.addEventListener('load', function() {
             const token = localStorage.getItem('authToken');
-            const userRole = localStorage.getItem('userRole');
-            
-            if (token && userRole) {
-                // Redirect to appropriate dashboard
+            if (token) {
+                const userRole = localStorage.getItem('userRole');
                 if (userRole === 'admin') {
                     window.location.href = 'admin_dashboard.html';
                 } else {
