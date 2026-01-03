@@ -382,128 +382,165 @@
             color: #3730A3;
         }
         
-        .calendar-container {
-            margin-top: 1.5rem;
-        }
-        
-        .calendar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-        
-        .calendar-nav {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .calendar-nav button {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: #F3F4F6;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        
-        .calendar-nav button:hover {
-            background: #E5E7EB;
-        }
-        
-        .calendar-month {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1F2937;
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-        }
-        
-        .calendar-day-header {
-            text-align: center;
-            font-weight: 600;
-            color: #6B7280;
-            font-size: 0.875rem;
-            padding: 0.75rem;
-        }
-        
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-        
-        .calendar-day:hover {
-            background: #F3F4F6;
-        }
-        
-        .calendar-day.today {
-            border: 2px solid #2563EB;
-            font-weight: 700;
-        }
-        
-        .calendar-day.present {
-            background: #D1FAE5;
-            color: #065F46;
-        }
-        
-        .calendar-day.absent {
-            background: #FEE2E2;
-            color: #991B1B;
-        }
-        
-        .calendar-day.leave {
-            background: #E0E7FF;
-            color: #3730A3;
-        }
-        
-        .calendar-day.half-day {
-            background: #FEF3C7;
-            color: #92400E;
-        }
-        
-        .calendar-day.other-month {
-            color: #D1D5DB;
-        }
-        
-        .calendar-legend {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #E5E7EB;
-            flex-wrap: wrap;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: #6B7280;
-        }
-        
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
+      .calendar-container {
+    margin-top: 1.5rem;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.calendar-nav button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #F3F4F6;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.calendar-nav button:hover {
+    background: #E5E7EB;
+}
+
+.calendar-month {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1F2937;
+}
+
+/* New wrapper for calendar */
+.calendar-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.calendar-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Calendar Days Header */
+.calendar-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: #F9FAFB;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+/* Calendar Grid for days only */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    min-height: 300px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    color: #6B7280;
+    font-size: 0.875rem;
+    padding: 0.75rem 0.5rem;
+}
+
+/* Make calendar days have consistent size */
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    min-height: 40px;
+    background: white;
+    border: 1px solid #E5E7EB;
+}
+
+.calendar-day:hover {
+    background: #F3F4F6;
+    transform: translateY(-1px);
+}
+
+.calendar-day.today {
+    border: 2px solid #2563EB;
+    font-weight: 700;
+}
+
+.calendar-day.present {
+    background: #D1FAE5;
+    color: #065F46;
+    border-color: #A7F3D0;
+}
+
+.calendar-day.absent {
+    background: #FEE2E2;
+    color: #991B1B;
+    border-color: #FECACA;
+}
+
+.calendar-day.leave {
+    background: #E0E7FF;
+    color: #3730A3;
+    border-color: #C7D2FE;
+}
+
+.calendar-day.half-day {
+    background: #FEF3C7;
+    color: #92400E;
+    border-color: #FDE68A;
+}
+
+.calendar-day.other-month {
+    color: #D1D5DB;
+    background: #F9FAFB;
+    border-color: #F3F4F6;
+}
+
+.calendar-legend {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #E5E7EB;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
         
         .stats-grid {
             display: grid;
@@ -897,68 +934,70 @@
                 </div>
                 
                 <!-- Calendar View -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2 class="section-title">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            Monthly Calendar
-                        </h2>
-                    </div>
-                    
-                    <div class="calendar-container">
-                        <div class="calendar-header">
-                            <div class="calendar-nav">
-                                <button onclick="previousMonth()">
-                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                    </svg>
-                                </button>
-                                <div class="calendar-month" id="calendarMonth">January 2026</div>
-                                <button onclick="nextMonth()">
-                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="calendar-grid">
-                            <div class="calendar-day-header">Sun</div>
-                            <div class="calendar-day-header">Mon</div>
-                            <div class="calendar-day-header">Tue</div>
-                            <div class="calendar-day-header">Wed</div>
-                            <div class="calendar-day-header">Thu</div>
-                            <div class="calendar-day-header">Fri</div>
-                            <div class="calendar-day-header">Sat</div>
-                            <div id="calendarDays"></div>
-                        </div>
-                        
-                        <div class="calendar-legend">
-                            <div class="legend-item">
-                                <div class="legend-color" style="background: #D1FAE5;"></div>
-                                <span>Present</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background: #FEE2E2;"></div>
-                                <span>Absent</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background: #E0E7FF;"></div>
-                                <span>Leave</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background: #FEF3C7;"></div>
-                                <span>Half Day</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+                <!-- Calendar View -->
+<div class="section-card">
+    <div class="section-header">
+        <h2 class="section-title">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            Monthly Calendar
+        </h2>
     </div>
     
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <div class="calendar-nav">
+                <button onclick="previousMonth()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <div class="calendar-month" id="calendarMonth">January 2026</div>
+                <button onclick="nextMonth()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Day Headers - Separate from the calendar grid -->
+        <div class="calendar-days-header">
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+        </div>
+        
+        <!-- Calendar Grid - This only contains the days -->
+        <div class="calendar-grid" id="calendarDays">
+            <!-- Calendar days will be populated by JavaScript -->
+        </div>
+        
+        <div class="calendar-legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #D1FAE5;"></div>
+                <span>Present</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FEE2E2;"></div>
+                <span>Absent</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #E0E7FF;"></div>
+                <span>Leave</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FEF3C7;"></div>
+                <span>Half Day</span>
+            </div>
+        </div>
+    </div>
+</div>
     <script>
         // Mock attendance data
         const mockAttendanceData = [
@@ -1220,76 +1259,83 @@
             showToast('Filters reset', 'success');
         }
         
-        // Render calendar
-        function renderCalendar() {
-            const year = currentMonth.getFullYear();
-            const month = currentMonth.getMonth();
-            
-            // Update month display
-            document.getElementById('calendarMonth').textContent = 
-                currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-            
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const daysInPrevMonth = new Date(year, month, 0).getDate();
-            
-            const calendarDays = document.getElementById('calendarDays');
-            calendarDays.innerHTML = '';
-            
-            // Previous month days
-            for (let i = firstDay - 1; i >= 0; i--) {
-                const day = daysInPrevMonth - i;
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'calendar-day other-month';
-                dayDiv.textContent = day;
-                calendarDays.appendChild(dayDiv);
-            }
-            
-            // Current month days
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'calendar-day';
-                dayDiv.textContent = day;
-                
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const record = mockAttendanceData.find(r => r.date === dateStr);
-                
-                if (record) {
-                    dayDiv.classList.add(record.status);
-                }
-                
-                // Mark today
-                const today = new Date();
-                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
-                    dayDiv.classList.add('today');
-                }
-                
-                calendarDays.appendChild(dayDiv);
-            }
-            
-            // Next month days
-            const totalCells = firstDay + daysInMonth;
-            const remainingCells = 42 - totalCells; // 6 rows * 7 days
-            
-            for (let day = 1; day <= remainingCells; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'calendar-day other-month';
-                dayDiv.textContent = day;
-                calendarDays.appendChild(dayDiv);
-            }
+     // Render calendar
+// Render calendar
+function renderCalendar() {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    
+    // Update month display
+    document.getElementById('calendarMonth').textContent = 
+        currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    
+    // Get first day of month (0 = Sunday, 1 = Monday, etc.)
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+    
+    const calendarGrid = document.getElementById('calendarDays');
+    calendarGrid.innerHTML = '';
+    
+    // Previous month days
+    for (let i = 0; i < firstDay; i++) {
+        const day = daysInPrevMonth - firstDay + i + 1;
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day other-month';
+        dayDiv.textContent = day;
+        calendarGrid.appendChild(dayDiv);
+    }
+    
+    // Current month days
+    const today = new Date();
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+        dayDiv.textContent = day;
+        
+        // Format date as YYYY-MM-DD
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        
+        // Find attendance record for this date
+        const record = mockAttendanceData.find(r => r.date === dateStr);
+        
+        if (record) {
+            dayDiv.classList.add(record.status);
         }
         
-        // Previous month
-        function previousMonth() {
-            currentMonth.setMonth(currentMonth.getMonth() - 1);
-            renderCalendar();
+        // Highlight today
+        if (year === today.getFullYear() && 
+            month === today.getMonth() && 
+            day === today.getDate()) {
+            dayDiv.classList.add('today');
         }
         
-        // Next month
-        function nextMonth() {
-            currentMonth.setMonth(currentMonth.getMonth() + 1);
-            renderCalendar();
-        }
+        calendarGrid.appendChild(dayDiv);
+    }
+    
+    // Add next month's days to complete the grid (6 weeks × 7 days = 42 cells)
+    const totalCells = firstDay + daysInMonth;
+    const remainingCells = 42 - totalCells;
+    
+    for (let day = 1; day <= remainingCells; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day other-month';
+        dayDiv.textContent = day;
+        calendarGrid.appendChild(dayDiv);
+    }
+}
+
+// Previous month
+function previousMonth() {
+    currentMonth.setMonth(currentMonth.getMonth() - 1);
+    renderCalendar();
+}
+
+// Next month
+function nextMonth() {
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+    renderCalendar();
+}
         
         // Show toast notification
         function showToast(message, type = 'success') {
