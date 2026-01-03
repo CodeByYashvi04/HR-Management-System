@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dayflow HRMS - Comprehensive attendance tracking and management system">
+    <title>Attendance Management - Dayflow HRMS</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        /* Additional custom styles for attendance management */
+        .attendance-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        }
+        
+        .header {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563EB;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover {
+            color: #2563EB;
+        }
+        
+        .nav-link.active {
+            color: #2563EB;
+            font-weight: 600;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: #6B7280;
+            font-size: 1rem;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+        
+        .status-icon.checked-in {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .status-icon.checked-out {
+            background: linear-gradient(135deg, #6B7280 0%, #475569 100%);
+            color: white;
+        }
+        
+        .status-details h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .status-details p {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+        
+        .time-display {
+            text-align: right;
+        }
+        
+        .current-time {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563EB;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .current-date {
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 56px;
+        }
+        
+        .action-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .action-btn.check-in {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .action-btn.check-in:hover {
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+        
+        .action-btn.check-out {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .action-btn.check-out:hover {
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+        }
+        
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .date-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: #374151;
+            background: white;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn:hover {
+            background: #1D4ED8;
+        }
+        
+        .reset-btn {
+            padding: 0.5rem 1rem;
+            background: #6B7280;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .reset-btn:hover {
+            background: #4B5563;
+        }
+        
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .attendance-table thead {
+            background: #F9FAFB;
+        }
+        
+        .attendance-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .attendance-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            color: #6B7280;
+        }
+        
+        .attendance-table tbody tr:hover {
+            background: #F9FAFB;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-badge.present {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .status-badge.absent {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .status-badge.half-day {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .status-badge.leave {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+        
+        .calendar-container {
+            margin-top: 1.5rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .calendar-nav button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #F3F4F6;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .calendar-nav button:hover {
+            background: #E5E7EB;
+        }
+        
+        .calendar-month {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: #6B7280;
+            font-size: 0.875rem;
+            padding: 0.75rem;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background: #F3F4F6;
+        }
+        
+        .calendar-day.today {
+            border: 2px solid #2563EB;
+            font-weight: 700;
+        }
+        
+        .calendar-day.present {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .calendar-day.absent {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .calendar-day.leave {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+        
+        .calendar-day.half-day {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .calendar-day.other-month {
+            color: #D1D5DB;
+        }
+        
+        .calendar-legend {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .stat-label {
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stat-change.positive {
+            color: #059669;
+        }
+        
+        .stat-change.negative {
+            color: #DC2626;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6B7280;
+        }
+        
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            color: #D1D5DB;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2563EB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 10000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.show {
+            display: flex;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10B981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #DC2626;
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .toast-icon.success {
+            color: #10B981;
+        }
+        
+        .toast-icon.error {
+            color: #DC2626;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+                overflow-x: auto;
+            }
+            
+            .nav-link span {
+                display: none;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .status-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .time-display {
+                text-align: left;
+            }
+            
+            .current-time {
+                font-size: 1.5rem;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                width: 100%;
+            }
+            
+            .date-input {
+                flex: 1;
+            }
+            
+            .attendance-table {
+                font-size: 0.875rem;
+            }
+            
+            .attendance-table th,
+            .attendance-table td {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .calendar-grid {
+                gap: 0.25rem;
+            }
+            
+            .calendar-day {
+                font-size: 0.875rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .toast {
+                right: 0.5rem;
+                left: 0.5rem;
+                min-width: auto;
+            }
+        }
+    </style>
+  
+  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fdayflowhr3542back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"></script>
+  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
+  </head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg class="toast-icon" id="toastIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toastMessage"></span>
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">D</div>
+                <div class="logo-text">Dayflow HRMS</div>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="employee_dashboard.html" class="nav-link">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="attendance_management.html" class="nav-link active">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Attendance</span>
+                </a>
+                <a href="leave_management.html" class="nav-link">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Leave</span>
+                </a>
+                <a href="salary_information.html" class="nav-link">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Salary</span>
+                </a>
+            </nav>
+            
+            <div class="user-section">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <button class="btn btn-ghost" onclick="logout()" style="height: 40px; padding: 0 1rem;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="attendance-container">
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Attendance Management</h1>
+                <p class="page-subtitle">Track your daily attendance and view historical records</p>
+            </div>
+            
+            <!-- Current Status Card -->
+            <div class="status-card">
+                <div class="status-header">
+                    <div class="status-info">
+                        <div class="status-icon" id="statusIcon">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="status-details">
+                            <h3 id="statusTitle">Ready to Check In</h3>
+                            <p id="statusDescription">Start your workday by checking in</p>
+                        </div>
+                    </div>
+                    <div class="time-display">
+                        <div class="current-time" id="currentTime">00:00:00</div>
+                        <div class="current-date" id="currentDate">January 3, 2026</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn check-in" id="checkInBtn" onclick="handleCheckIn()">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </svg>
+                        Check In
+                    </button>
+                    <button class="action-btn check-out" id="checkOutBtn" onclick="handleCheckOut()" disabled>
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        Check Out
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Statistics Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Days Present</div>
+                    <div class="stat-value" id="totalPresent">18</div>
+                    <div class="stat-change positive">↑ 2 from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Hours Worked</div>
+                    <div class="stat-value" id="totalHours">144</div>
+                    <div class="stat-change positive">↑ 8 from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Average Hours/Day</div>
+                    <div class="stat-value" id="avgHours">8.0</div>
+                    <div class="stat-change">→ Same as last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Attendance Rate</div>
+                    <div class="stat-value" id="attendanceRate">95%</div>
+                    <div class="stat-change positive">↑ 3% from last month</div>
+                </div>
+            </div>
+            
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Attendance History -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attendance History
+                        </h2>
+                        <div class="filter-controls">
+                            <input type="date" class="date-input" id="startDate" value="2026-01-01">
+                            <input type="date" class="date-input" id="endDate" value="2026-01-03">
+                            <button class="filter-btn" onclick="filterAttendance()">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                </svg>
+                                Filter
+                            </button>
+                            <button class="reset-btn" onclick="resetFilter()">Reset</button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="attendance-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Total Hours</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Calendar View -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Monthly Calendar
+                        </h2>
+                    </div>
+                    
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <div class="calendar-nav">
+                                <button onclick="previousMonth()">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="calendar-month" id="calendarMonth">January 2026</div>
+                                <button onclick="nextMonth()">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid">
+                            <div class="calendar-day-header">Sun</div>
+                            <div class="calendar-day-header">Mon</div>
+                            <div class="calendar-day-header">Tue</div>
+                            <div class="calendar-day-header">Wed</div>
+                            <div class="calendar-day-header">Thu</div>
+                            <div class="calendar-day-header">Fri</div>
+                            <div class="calendar-day-header">Sat</div>
+                            <div id="calendarDays"></div>
+                        </div>
+                        
+                        <div class="calendar-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #D1FAE5;"></div>
+                                <span>Present</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #FEE2E2;"></div>
+                                <span>Absent</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #E0E7FF;"></div>
+                                <span>Leave</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #FEF3C7;"></div>
+                                <span>Half Day</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Mock attendance data
+        const mockAttendanceData = [
+            { date: '2026-01-03', checkIn: '09:00 AM', checkOut: null, hours: null, status: 'present' },
+            { date: '2026-01-02', checkIn: '08:55 AM', checkOut: '05:30 PM', hours: '8.5', status: 'present' },
+            { date: '2026-01-01', checkIn: '09:10 AM', checkOut: '05:15 PM', hours: '8.0', status: 'present' },
+            { date: '2025-12-31', checkIn: '09:00 AM', checkOut: '05:00 PM', hours: '8.0', status: 'present' },
+            { date: '2025-12-30', checkIn: '09:05 AM', checkOut: '05:20 PM', hours: '8.25', status: 'present' },
+            { date: '2025-12-27', checkIn: '09:00 AM', checkOut: '01:00 PM', hours: '4.0', status: 'half-day' },
+            { date: '2025-12-26', checkIn: null, checkOut: null, hours: null, status: 'leave' },
+            { date: '2025-12-25', checkIn: null, checkOut: null, hours: null, status: 'leave' },
+            { date: '2025-12-24', checkIn: '08:50 AM', checkOut: '05:10 PM', hours: '8.3', status: 'present' },
+            { date: '2025-12-23', checkIn: '09:15 AM', checkOut: '05:45 PM', hours: '8.5', status: 'present' },
+        ];
+        
+        let currentMonth = new Date(2026, 0, 1); // January 2026
+        let isCheckedIn = false;
+        let checkInTime = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            loadAttendanceHistory();
+            renderCalendar();
+            updateUserAvatar();
+            
+            // Check if already checked in today
+            const todayRecord = mockAttendanceData.find(record => record.date === '2026-01-03');
+            if (todayRecord && todayRecord.checkIn && !todayRecord.checkOut) {
+                isCheckedIn = true;
+                checkInTime = todayRecord.checkIn;
+                updateCheckInStatus();
+            }
+        });
+        
+        // Check authentication
+        function checkAuthStatus() {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Update user avatar
+        function updateUserAvatar() {
+            const userName = localStorage.getItem('userName') || 'User';
+            const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userAvatar').textContent = initials;
+        }
+        
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+            const dateString = now.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('currentTime').textContent = timeString;
+            document.getElementById('currentDate').textContent = dateString;
+        }
+        
+        // Handle check in
+        function handleCheckIn() {
+            if (isCheckedIn) {
+                showToast('You have already checked in today', 'error');
+                return;
+            }
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.add('show');
+            
+            setTimeout(() => {
+                const now = new Date();
+                checkInTime = now.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                
+                isCheckedIn = true;
+                
+                // Update today's record
+                const todayRecord = mockAttendanceData.find(record => record.date === '2026-01-03');
+                if (todayRecord) {
+                    todayRecord.checkIn = checkInTime;
+                }
+                
+                updateCheckInStatus();
+                loadAttendanceHistory();
+                
+                loadingOverlay.classList.remove('show');
+                showToast('Successfully checked in at ' + checkInTime, 'success');
+            }, 1000);
+        }
+        
+        // Handle check out
+        function handleCheckOut() {
+            if (!isCheckedIn) {
+                showToast('Please check in first', 'error');
+                return;
+            }
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.add('show');
+            
+            setTimeout(() => {
+                const now = new Date();
+                const checkOutTime = now.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                
+                // Calculate hours worked
+                const checkInDate = new Date('2026-01-03 ' + checkInTime);
+                const checkOutDate = new Date('2026-01-03 ' + checkOutTime);
+                const hoursWorked = ((checkOutDate - checkInDate) / (1000 * 60 * 60)).toFixed(1);
+                
+                // Update today's record
+                const todayRecord = mockAttendanceData.find(record => record.date === '2026-01-03');
+                if (todayRecord) {
+                    todayRecord.checkOut = checkOutTime;
+                    todayRecord.hours = hoursWorked;
+                }
+                
+                isCheckedIn = false;
+                checkInTime = null;
+                
+                updateCheckOutStatus();
+                loadAttendanceHistory();
+                
+                loadingOverlay.classList.remove('show');
+                showToast('Successfully checked out at ' + checkOutTime, 'success');
+            }, 1000);
+        }
+        
+        // Update check-in status UI
+        function updateCheckInStatus() {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusDescription = document.getElementById('statusDescription');
+            const checkInBtn = document.getElementById('checkInBtn');
+            const checkOutBtn = document.getElementById('checkOutBtn');
+            
+            statusIcon.className = 'status-icon checked-in';
+            statusTitle.textContent = 'Checked In';
+            statusDescription.textContent = 'You checked in at ' + checkInTime;
+            checkInBtn.disabled = true;
+            checkOutBtn.disabled = false;
+        }
+        
+        // Update check-out status UI
+        function updateCheckOutStatus() {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusDescription = document.getElementById('statusDescription');
+            const checkInBtn = document.getElementById('checkInBtn');
+            const checkOutBtn = document.getElementById('checkOutBtn');
+            
+            statusIcon.className = 'status-icon checked-out';
+            statusTitle.textContent = 'Checked Out';
+            statusDescription.textContent = 'You have completed your workday';
+            checkInBtn.disabled = true;
+            checkOutBtn.disabled = true;
+        }
+        
+        // Load attendance history
+        function loadAttendanceHistory() {
+            const tbody = document.getElementById('attendanceTableBody');
+            tbody.innerHTML = '';
+            
+            mockAttendanceData.forEach(record => {
+                const row = document.createElement('tr');
+                
+                const dateCell = document.createElement('td');
+                const date = new Date(record.date);
+                dateCell.textContent = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                dateCell.style.fontWeight = '600';
+                dateCell.style.color = '#1F2937';
+                
+                const checkInCell = document.createElement('td');
+                checkInCell.textContent = record.checkIn || '-';
+                
+                const checkOutCell = document.createElement('td');
+                checkOutCell.textContent = record.checkOut || '-';
+                
+                const hoursCell = document.createElement('td');
+                hoursCell.textContent = record.hours ? record.hours + ' hrs' : '-';
+                hoursCell.style.fontWeight = '600';
+                
+                const statusCell = document.createElement('td');
+                const statusBadge = document.createElement('span');
+                statusBadge.className = `status-badge ${record.status}`;
+                
+                let statusText = '';
+                let statusIcon = '';
+                
+                switch(record.status) {
+                    case 'present':
+                        statusText = 'Present';
+                        statusIcon = '✓';
+                        break;
+                    case 'absent':
+                        statusText = 'Absent';
+                        statusIcon = '✗';
+                        break;
+                    case 'half-day':
+                        statusText = 'Half Day';
+                        statusIcon = '◐';
+                        break;
+                    case 'leave':
+                        statusText = 'Leave';
+                        statusIcon = '○';
+                        break;
+                }
+                
+                statusBadge.innerHTML = `${statusIcon} ${statusText}`;
+                statusCell.appendChild(statusBadge);
+                
+                row.appendChild(dateCell);
+                row.appendChild(checkInCell);
+                row.appendChild(checkOutCell);
+                row.appendChild(hoursCell);
+                row.appendChild(statusCell);
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Filter attendance
+        function filterAttendance() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!startDate || !endDate) {
+                showToast('Please select both start and end dates', 'error');
+                return;
+            }
+            
+            showToast('Filtering attendance records...', 'success');
+            // In a real application, this would filter the data
+            loadAttendanceHistory();
+        }
+        
+        // Reset filter
+        function resetFilter() {
+            document.getElementById('startDate').value = '2026-01-01';
+            document.getElementById('endDate').value = '2026-01-03';
+            loadAttendanceHistory();
+            showToast('Filters reset', 'success');
+        }
+        
+        // Render calendar
+        function renderCalendar() {
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            
+            // Update month display
+            document.getElementById('calendarMonth').textContent = 
+                currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+            
+            const calendarDays = document.getElementById('calendarDays');
+            calendarDays.innerHTML = '';
+            
+            // Previous month days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day other-month';
+                dayDiv.textContent = day;
+                calendarDays.appendChild(dayDiv);
+            }
+            
+            // Current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.textContent = day;
+                
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const record = mockAttendanceData.find(r => r.date === dateStr);
+                
+                if (record) {
+                    dayDiv.classList.add(record.status);
+                }
+                
+                // Mark today
+                const today = new Date();
+                if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+                    dayDiv.classList.add('today');
+                }
+                
+                calendarDays.appendChild(dayDiv);
+            }
+            
+            // Next month days
+            const totalCells = firstDay + daysInMonth;
+            const remainingCells = 42 - totalCells; // 6 rows * 7 days
+            
+            for (let day = 1; day <= remainingCells; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day other-month';
+                dayDiv.textContent = day;
+                calendarDays.appendChild(dayDiv);
+            }
+        }
+        
+        // Previous month
+        function previousMonth() {
+            currentMonth.setMonth(currentMonth.getMonth() - 1);
+            renderCalendar();
+        }
+        
+        // Next month
+        function nextMonth() {
+            currentMonth.setMonth(currentMonth.getMonth() + 1);
+            renderCalendar();
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = `toast ${type} show`;
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toastIcon.className = 'toast-icon success';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            } else {
+                toastIcon.className = 'toast-icon error';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Logout function
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userName');
+            window.location.href = 'login.html';
+        }
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

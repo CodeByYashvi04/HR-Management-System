@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dayflow HRMS - Secure login portal for employees and administrators">
+    <title>Login - Dayflow HRMS</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        /* Additional custom styles for login page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+        
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .login-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            margin: 0 1rem;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563EB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon input {
+            padding-left: 3rem;
+        }
+        
+        .input-icon svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #6B7280;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6B7280;
+            transition: color 0.2s;
+        }
+        
+        .password-toggle:hover {
+            color: #2563EB;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2563EB;
+        }
+        
+        .trust-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+        
+        .trust-badge svg {
+            width: 16px;
+            height: 16px;
+            color: #10B981;
+        }
+        
+        .error-message {
+            display: none;
+            color: #DC2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2563EB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 10000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.show {
+            display: flex;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10B981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #DC2626;
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .toast-icon.success {
+            color: #10B981;
+        }
+        
+        .toast-icon.error {
+            color: #DC2626;
+        }
+        
+        @media (max-width: 640px) {
+            .login-card {
+                margin: 1rem;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .trust-badges {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .toast {
+                right: 0.5rem;
+                left: 0.5rem;
+                min-width: auto;
+            }
+        }
+    </style>
+  
+  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fdayflowhr3542back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"></script>
+  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
+  </head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg class="toast-icon" id="toastIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toastMessage"></span>
+    </div>
+    
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Logo and Title -->
+            <div class="logo-container">
+                <div class="logo-text">
+                    <div class="logo-icon">D</div>
+                    Dayflow HRMS
+                </div>
+                <p class="text-text-secondary mt-2">Sign in to access your account</p>
+            </div>
+            
+            <!-- Login Form Card -->
+            <div class="card">
+                <form id="loginForm" novalidate>
+                    <!-- Email Input -->
+                    <div class="form-group">
+                        <label for="email" class="label">Email Address</label>
+                        <div class="input-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                            </svg>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="input" 
+                                placeholder="john.doe@company.com"
+                                required
+                                autocomplete="email"
+                            >
+                        </div>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+                    
+                    <!-- Password Input -->
+                    <div class="form-group">
+                        <label for="password" class="label">Password</label>
+                        <div class="input-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="input" 
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <svg class="password-toggle" id="togglePassword" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="error-message" id="passwordError">Password is required</div>
+                    </div>
+                    
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <label for="rememberMe" class="text-sm text-text-secondary cursor-pointer">Remember me</label>
+                        </div>
+                        <a href="javascript:void(0)" class="text-sm text-primary hover:text-primary-700 transition-colors">Forgot password?</a>
+                    </div>
+                    
+                    <!-- Login Button -->
+                    <button type="submit" class="btn btn-primary w-full mb-4">
+                        Sign In
+                    </button>
+                    
+                    <!-- Signup Link -->
+                    <div class="text-center">
+                        <span class="text-sm text-text-secondary">Don't have an account? </span>
+                        <a href="javascript:void(0)" class="text-sm text-primary hover:text-primary-700 font-medium transition-colors">Create Account</a>
+                    </div>
+                    
+                    <!-- Trust Badges -->
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <span>SSL Secured</span>
+                        </div>
+                        <div class="trust-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            <span>JWT Authentication</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Demo Credentials Info -->
+            <div class="mt-4 p-4 bg-primary-50 rounded-lg">
+                <p class="text-sm text-primary-700 font-medium mb-2">Demo Credentials:</p>
+                <div class="text-xs text-primary-600 space-y-1">
+                    <p><strong>Employee:</strong> employee@dayflow.com / employee123</p>
+                    <p><strong>Admin:</strong> admin@dayflow.com / admin123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Mock user data for authentication
+        const mockUsers = [
+            {
+                email: 'employee@dayflow.com',
+                password: 'employee123',
+                role: 'employee',
+                name: 'John Doe',
+                id: 'EMP001'
+            },
+            {
+                email: 'admin@dayflow.com',
+                password: 'admin123',
+                role: 'admin',
+                name: 'Sarah Johnson',
+                id: 'ADM001'
+            },
+            {
+                email: 'jane.smith@dayflow.com',
+                password: 'employee123',
+                role: 'employee',
+                name: 'Jane Smith',
+                id: 'EMP002'
+            }
+        ];
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const togglePassword = document.getElementById('togglePassword');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const toast = document.getElementById('toast');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        // Password Toggle Functionality
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle icon
+            if (type === 'password') {
+                this.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>';
+            } else {
+                this.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>';
+            }
+        });
+        
+        // Email Validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        // Show Toast Notification
+        function showToast(message, type = 'success') {
+            toast.className = `toast ${type} show`;
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toastIcon.className = 'toast-icon success';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            } else {
+                toastIcon.className = 'toast-icon error';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Form Validation
+        emailInput.addEventListener('blur', function() {
+            if (!validateEmail(this.value)) {
+                emailError.classList.add('show');
+                this.classList.add('input-error');
+            } else {
+                emailError.classList.remove('show');
+                this.classList.remove('input-error');
+            }
+        });
+        
+        passwordInput.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                passwordError.classList.add('show');
+                this.classList.add('input-error');
+            } else {
+                passwordError.classList.remove('show');
+                this.classList.remove('input-error');
+            }
+        });
+        
+        // Form Submit Handler
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            let isValid = true;
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                emailError.classList.add('show');
+                emailInput.classList.add('input-error');
+                isValid = false;
+            } else {
+                emailError.classList.remove('show');
+                emailInput.classList.remove('input-error');
+            }
+            
+            // Validate password
+            if (password === '') {
+                passwordError.classList.add('show');
+                passwordInput.classList.add('input-error');
+                isValid = false;
+            } else {
+                passwordError.classList.remove('show');
+                passwordInput.classList.remove('input-error');
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Show loading overlay
+            loadingOverlay.classList.add('show');
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Find user in mock data
+                const user = mockUsers.find(u => u.email === email && u.password === password);
+                
+                loadingOverlay.classList.remove('show');
+                
+                if (user) {
+                    // Store user data in localStorage (simulating JWT token)
+                    const token = btoa(JSON.stringify({
+                        userId: user.id,
+                        email: user.email,
+                        role: user.role,
+                        name: user.name,
+                        timestamp: new Date().getTime()
+                    }));
+                    
+                    localStorage.setItem('authToken', token);
+                    localStorage.setItem('userRole', user.role);
+                    localStorage.setItem('userName', user.name);
+                    
+                    // Show success toast
+                    showToast('Login successful! Redirecting...', 'success');
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (user.role === 'admin') {
+                            window.location.href = 'admin_dashboard.html';
+                        } else {
+                            window.location.href = 'employee_dashboard.html';
+                        }
+                    }, 1500);
+                } else {
+                    // Show error toast
+                    showToast('Invalid email or password. Please try again.', 'error');
+                }
+            }, 1500);
+        });
+        
+        // Check if user is already logged in
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('authToken');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (token && userRole) {
+                // Redirect to appropriate dashboard
+                if (userRole === 'admin') {
+                    window.location.href = 'admin_dashboard.html';
+                } else {
+                    window.location.href = 'employee_dashboard.html';
+                }
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

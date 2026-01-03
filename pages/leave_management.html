@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dayflow HRMS - Comprehensive leave management system for employees and administrators">
+    <title>Leave Management - Dayflow HRMS</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        /* Additional custom styles for leave management page */
+        .leave-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            padding: 2rem 1rem;
+        }
+        
+        .leave-header {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .back-button:hover {
+            background: #E2E8F0;
+            transform: translateX(-2px);
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin: 0;
+        }
+        
+        .header-title p {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin: 0.25rem 0 0 0;
+        }
+        
+        .role-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: #F1F5F9;
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+        }
+        
+        .role-toggle button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: #64748B;
+        }
+        
+        .role-toggle button.active {
+            background: white;
+            color: #2563EB;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        
+        .leave-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .leave-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .leave-balance-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        
+        .balance-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .balance-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .balance-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #F8FAFC;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .balance-item:hover {
+            background: #F1F5F9;
+            transform: translateX(4px);
+        }
+        
+        .balance-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .balance-type {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .balance-type span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+        }
+        
+        .balance-days {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        
+        .balance-bar {
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .balance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .balance-fill.warning {
+            background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%);
+        }
+        
+        .balance-fill.danger {
+            background: linear-gradient(90deg, #EF4444 0%, #DC2626 100%);
+        }
+        
+        .leave-form-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid #6B7280;
+            pointer-events: none;
+        }
+        
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            margin-top: 0.25rem;
+        }
+        
+        .char-count.warning {
+            color: #F59E0B;
+        }
+        
+        .char-count.danger {
+            color: #DC2626;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .leave-history-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .history-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .history-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .filter-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            border: 1px solid #E2E8F0;
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-button:hover {
+            border-color: #2563EB;
+            color: #2563EB;
+        }
+        
+        .filter-button.active {
+            background: #2563EB;
+            color: white;
+            border-color: #2563EB;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 250px;
+        }
+        
+        .search-box input {
+            padding-left: 2.5rem;
+            height: 40px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: #9CA3AF;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0.5rem;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .leave-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .leave-table thead {
+            background: #F8FAFC;
+        }
+        
+        .leave-table th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 1px solid #E2E8F0;
+            white-space: nowrap;
+        }
+        
+        .leave-table th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .leave-table th.sortable:hover {
+            color: #2563EB;
+        }
+        
+        .leave-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 0.875rem;
+            color: #1F2937;
+        }
+        
+        .leave-table tbody tr {
+            transition: background 0.2s;
+        }
+        
+        .leave-table tbody tr:hover {
+            background: #F9FAFB;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        
+        .status-badge.pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .status-badge.approved {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .status-badge.rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        
+        .action-btn.approve {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .action-btn.approve:hover {
+            background: #A7F3D0;
+        }
+        
+        .action-btn.reject {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .action-btn.reject:hover {
+            background: #FECACA;
+        }
+        
+        .action-btn.view {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        .action-btn.view:hover {
+            background: #BFDBFE;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: #F1F5F9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94A3B8;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+        
+        .admin-view {
+            display: none;
+        }
+        
+        .admin-view.active {
+            display: block;
+        }
+        
+        .employee-view {
+            display: block;
+        }
+        
+        .employee-view.hidden {
+            display: none;
+        }
+        
+        .pending-requests-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .pending-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pending-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .pending-count {
+            background: #DC2626;
+            color: white;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .request-card {
+            background: #F8FAFC;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #F59E0B;
+            transition: all 0.2s;
+        }
+        
+        .request-card:hover {
+            background: #F1F5F9;
+            transform: translateX(4px);
+        }
+        
+        .request-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .request-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .request-employee {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .employee-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .employee-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin: 0;
+        }
+        
+        .employee-info p {
+            font-size: 0.75rem;
+            color: #6B7280;
+            margin: 0.125rem 0 0 0;
+        }
+        
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        
+        .detail-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+        
+        .request-reason {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            color: #475569;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+        
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.show {
+            display: flex;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10B981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #DC2626;
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .toast-icon.success {
+            color: #10B981;
+        }
+        
+        .toast-icon.error {
+            color: #DC2626;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin: 0;
+        }
+        
+        .close-modal {
+            width: 32px;
+            height: 32px;
+            border-radius: 0.375rem;
+            background: #F1F5F9;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .close-modal:hover {
+            background: #E2E8F0;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2563EB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 1024px) {
+            .leave-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .request-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .leave-container {
+                padding: 1rem 0.5rem;
+            }
+            
+            .leave-header {
+                padding: 1rem;
+            }
+            
+            .header-title h1 {
+                font-size: 1.25rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .table-container {
+                border-radius: 0;
+                margin: 0 -1rem;
+            }
+            
+            .leave-table th,
+            .leave-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+  
+  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fdayflowhr3542back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"></script>
+  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
+  </head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg class="toast-icon" id="toastIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toastMessage"></span>
+    </div>
+    
+    <!-- Comment Modal -->
+    <div class="modal-overlay" id="commentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Comment</h3>
+                <button class="close-modal" onclick="closeCommentModal()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="commentForm">
+                <div class="form-group">
+                    <label for="adminComment" class="label">Comment (Optional)</label>
+                    <textarea 
+                        id="adminComment" 
+                        class="input" 
+                        placeholder="Add a comment for the employee..."
+                        maxlength="500"
+                    ></textarea>
+                    <div class="char-count" id="commentCharCount">0 / 500</div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-ghost" onclick="closeCommentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitCommentBtn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Leave Management Container -->
+    <div class="leave-container">
+        <!-- Header -->
+        <div class="leave-header">
+            <div class="header-left">
+                <div class="back-button" onclick="goBack()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>Leave Management</h1>
+                    <p>Manage leave applications and track leave balance</p>
+                </div>
+            </div>
+            <div class="role-toggle" id="roleToggle" style="display: none;">
+                <button class="active" onclick="switchView('employee')">Employee View</button>
+                <button onclick="switchView('admin')">Admin View</button>
+            </div>
+        </div>
+        
+        <div class="leave-content">
+            <!-- Employee View -->
+            <div class="employee-view" id="employeeView">
+                <!-- Leave Balance and Application Form -->
+                <div class="leave-grid">
+                    <!-- Leave Balance Card -->
+                    <div class="leave-balance-card">
+                        <div class="balance-header">
+                            <div class="balance-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700; color: #1F2937;">Leave Balance</h3>
+                                <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #6B7280;">Available leave days</p>
+                            </div>
+                        </div>
+                        
+                        <div id="leaveBalanceContainer">
+                            <!-- Leave balance items will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Leave Application Form -->
+                    <div class="leave-form-card">
+                        <div class="form-header">
+                            <div class="form-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700; color: #1F2937;">Apply for Leave</h3>
+                                <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #6B7280;">Submit a new leave request</p>
+                            </div>
+                        </div>
+                        
+                        <form id="leaveApplicationForm">
+                            <div class="form-group">
+                                <label for="leaveType" class="label">Leave Type *</label>
+                                <div class="select-wrapper">
+                                    <select id="leaveType" class="input" required>
+                                        <option value="">Select leave type</option>
+                                        <option value="paid">Paid Leave</option>
+                                        <option value="sick">Sick Leave</option>
+                                        <option value="unpaid">Unpaid Leave</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="startDate" class="label">Start Date *</label>
+                                    <input type="date" id="startDate" class="input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="endDate" class="label">End Date *</label>
+                                    <input type="date" id="endDate" class="input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="leaveReason" class="label">Reason *</label>
+                                <textarea 
+                                    id="leaveReason" 
+                                    class="input" 
+                                    placeholder="Please provide a reason for your leave request..."
+                                    required
+                                    maxlength="500"
+                                ></textarea>
+                                <div class="char-count" id="reasonCharCount">0 / 500</div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-ghost" onclick="resetForm()">Reset</button>
+                                <button type="submit" class="btn btn-primary">Submit Request</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Leave History -->
+                <div class="leave-history-card">
+                    <div class="history-header">
+                        <div class="history-title">
+                            <div class="history-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700; color: #1F2937;">Leave History</h3>
+                                <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #6B7280;">Track your leave requests</p>
+                            </div>
+                        </div>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input type="text" class="input" placeholder="Search..." id="searchInput">
+                            </div>
+                            <button class="filter-button active" onclick="filterByStatus('all')">
+                                All
+                            </button>
+                            <button class="filter-button" onclick="filterByStatus('pending')">
+                                Pending
+                            </button>
+                            <button class="filter-button" onclick="filterByStatus('approved')">
+                                Approved
+                            </button>
+                            <button class="filter-button" onclick="filterByStatus('rejected')">
+                                Rejected
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="leave-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" onclick="sortTable('type')">Type</th>
+                                    <th class="sortable" onclick="sortTable('startDate')">Start Date</th>
+                                    <th class="sortable" onclick="sortTable('endDate')">End Date</th>
+                                    <th>Days</th>
+                                    <th>Status</th>
+                                    <th>Applied On</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaveHistoryBody">
+                                <!-- Leave history rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin View -->
+            <div class="admin-view" id="adminView">
+                <!-- Pending Requests -->
+                <div class="pending-requests-card">
+                    <div class="pending-header">
+                        <div class="pending-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700; color: #1F2937;">Pending Requests</h3>
+                                <span class="pending-count" id="pendingCount">0</span>
+                            </div>
+                            <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #6B7280;">Review and approve leave requests</p>
+                        </div>
+                    </div>
+                    
+                    <div id="pendingRequestsContainer">
+                        <!-- Pending request cards will be inserted here -->
+                    </div>
+                </div>
+                
+                <!-- All Leave Requests -->
+                <div class="leave-history-card">
+                    <div class="history-header">
+                        <div class="history-title">
+                            <div class="history-icon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700; color: #1F2937;">All Leave Requests</h3>
+                                <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #6B7280;">Complete leave management overview</p>
+                            </div>
+                        </div>
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input type="text" class="input" placeholder="Search employee..." id="adminSearchInput">
+                            </div>
+                            <button class="filter-button active" onclick="filterAdminByStatus('all')">
+                                All
+                            </button>
+                            <button class="filter-button" onclick="filterAdminByStatus('pending')">
+                                Pending
+                            </button>
+                            <button class="filter-button" onclick="filterAdminByStatus('approved')">
+                                Approved
+                            </button>
+                            <button class="filter-button" onclick="filterAdminByStatus('rejected')">
+                                Rejected
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="leave-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" onclick="sortAdminTable('employee')">Employee</th>
+                                    <th class="sortable" onclick="sortAdminTable('type')">Type</th>
+                                    <th class="sortable" onclick="sortAdminTable('startDate')">Start Date</th>
+                                    <th class="sortable" onclick="sortAdminTable('endDate')">End Date</th>
+                                    <th>Days</th>
+                                    <th>Status</th>
+                                    <th>Applied On</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminLeaveHistoryBody">
+                                <!-- Admin leave history rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Mock data for leave management
+        const mockLeaveBalance = {
+            paid: { available: 12, total: 15 },
+            sick: { available: 8, total: 10 },
+            unpaid: { available: 5, total: 5 }
+        };
+        
+        let mockLeaveHistory = [
+            {
+                id: 1,
+                type: 'paid',
+                startDate: '2026-01-15',
+                endDate: '2026-01-17',
+                days: 3,
+                status: 'approved',
+                appliedOn: '2026-01-05',
+                reason: 'Family vacation planned for the new year',
+                adminComment: 'Approved. Enjoy your vacation!'
+            },
+            {
+                id: 2,
+                type: 'sick',
+                startDate: '2025-12-20',
+                endDate: '2025-12-22',
+                days: 3,
+                status: 'approved',
+                appliedOn: '2025-12-19',
+                reason: 'Seasonal flu and need rest',
+                adminComment: 'Get well soon!'
+            },
+            {
+                id: 3,
+                type: 'paid',
+                startDate: '2026-02-10',
+                endDate: '2026-02-14',
+                days: 5,
+                status: 'pending',
+                appliedOn: '2026-01-03',
+                reason: 'Planning a trip with family during Valentine\'s week',
+                adminComment: ''
+            }
+        ];
+        
+        let mockAllLeaveRequests = [
+            {
+                id: 1,
+                employeeId: 'EMP001',
+                employeeName: 'John Doe',
+                employeeAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
+                department: 'Engineering',
+                type: 'paid',
+                startDate: '2026-01-15',
+                endDate: '2026-01-17',
+                days: 3,
+                status: 'approved',
+                appliedOn: '2026-01-05',
+                reason: 'Family vacation planned for the new year',
+                adminComment: 'Approved. Enjoy your vacation!'
+            },
+            {
+                id: 2,
+                employeeId: 'EMP002',
+                employeeName: 'Jane Smith',
+                employeeAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+                department: 'Marketing',
+                type: 'sick',
+                startDate: '2026-01-08',
+                endDate: '2026-01-10',
+                days: 3,
+                status: 'pending',
+                appliedOn: '2026-01-03',
+                reason: 'Medical appointment and recovery time needed',
+                adminComment: ''
+            },
+            {
+                id: 3,
+                employeeId: 'EMP003',
+                employeeName: 'Mike Johnson',
+                employeeAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
+                department: 'Sales',
+                type: 'unpaid',
+                startDate: '2026-01-20',
+                endDate: '2026-01-22',
+                days: 3,
+                status: 'pending',
+                appliedOn: '2026-01-03',
+                reason: 'Personal matters that require immediate attention',
+                adminComment: ''
+            },
+            {
+                id: 4,
+                employeeId: 'EMP004',
+                employeeName: 'Sarah Williams',
+                employeeAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
+                department: 'HR',
+                type: 'paid',
+                startDate: '2025-12-28',
+                endDate: '2026-01-02',
+                days: 6,
+                status: 'approved',
+                appliedOn: '2025-12-15',
+                reason: 'Year-end holidays with family',
+                adminComment: 'Approved for year-end break'
+            }
+        ];
+        
+        let currentUser = null;
+        let currentView = 'employee';
+        let currentFilter = 'all';
+        let currentAdminFilter = 'all';
+        let currentAction = null;
+        let currentRequestId = null;
+        
+        // Initialize page
+        window.addEventListener('load', function() {
+            // Check authentication
+            const token = localStorage.getItem('authToken');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (!token || !userRole) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Decode user info
+            try {
+                const userData = JSON.parse(atob(token));
+                currentUser = userData;
+                
+                // Show role toggle for admin
+                if (userRole === 'admin') {
+                    document.getElementById('roleToggle').style.display = 'flex';
+                }
+                
+                // Initialize views
+                renderLeaveBalance();
+                renderLeaveHistory();
+                renderPendingRequests();
+                renderAdminLeaveHistory();
+                
+                // Set minimum date for date inputs
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('startDate').min = today;
+                document.getElementById('endDate').min = today;
+                
+                // Add event listeners
+                document.getElementById('leaveApplicationForm').addEventListener('submit', handleLeaveSubmit);
+                document.getElementById('commentForm').addEventListener('submit', handleCommentSubmit);
+                document.getElementById('leaveReason').addEventListener('input', updateCharCount);
+                document.getElementById('adminComment').addEventListener('input', updateCommentCharCount);
+                document.getElementById('searchInput').addEventListener('input', handleSearch);
+                document.getElementById('adminSearchInput').addEventListener('input', handleAdminSearch);
+                document.getElementById('startDate').addEventListener('change', validateDates);
+                document.getElementById('endDate').addEventListener('change', validateDates);
+                
+            } catch (error) {
+                console.error('Error decoding token:', error);
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Render leave balance
+        function renderLeaveBalance() {
+            const container = document.getElementById('leaveBalanceContainer');
+            const leaveTypes = [
+                { key: 'paid', label: 'Paid Leave', color: '#10B981' },
+                { key: 'sick', label: 'Sick Leave', color: '#F59E0B' },
+                { key: 'unpaid', label: 'Unpaid Leave', color: '#6B7280' }
+            ];
+            
+            container.innerHTML = leaveTypes.map(type => {
+                const balance = mockLeaveBalance[type.key];
+                const percentage = (balance.available / balance.total) * 100;
+                let fillClass = '';
+                
+                if (percentage <= 25) {
+                    fillClass = 'danger';
+                } else if (percentage <= 50) {
+                    fillClass = 'warning';
+                }
+                
+                return `
+                    <div class="balance-item">
+                        <div class="balance-type">
+                            <span>${type.label}</span>
+                            <span class="balance-days">${balance.available}/${balance.total}</span>
+                        </div>
+                        <div class="balance-bar">
+                            <div class="balance-fill ${fillClass}" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Render leave history
+        function renderLeaveHistory() {
+            const tbody = document.getElementById('leaveHistoryBody');
+            const filteredHistory = mockLeaveHistory.filter(leave => {
+                if (currentFilter === 'all') return true;
+                return leave.status === currentFilter;
+            });
+            
+            if (filteredHistory.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <h3>No Leave Requests Found</h3>
+                                <p>You haven't submitted any leave requests yet</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = filteredHistory.map(leave => {
+                const statusBadge = getStatusBadge(leave.status);
+                const typeLabel = getLeaveTypeLabel(leave.type);
+                
+                return `
+                    <tr>
+                        <td>${typeLabel}</td>
+                        <td>${formatDate(leave.startDate)}</td>
+                        <td>${formatDate(leave.endDate)}</td>
+                        <td>${leave.days}</td>
+                        <td>${statusBadge}</td>
+                        <td>${formatDate(leave.appliedOn)}</td>
+                        <td>
+                            <button class="action-btn view" onclick="viewLeaveDetails(${leave.id})">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // Render pending requests (admin view)
+        function renderPendingRequests() {
+            const container = document.getElementById('pendingRequestsContainer');
+            const pendingRequests = mockAllLeaveRequests.filter(req => req.status === 'pending');
+            
+            document.getElementById('pendingCount').textContent = pendingRequests.length;
+            
+            if (pendingRequests.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3>All Caught Up!</h3>
+                        <p>No pending leave requests at the moment</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = pendingRequests.map(request => `
+                <div class="request-card">
+                    <div class="request-header">
+                        <div class="request-employee">
+                            <img src="${request.employeeAvatar}" alt="${request.employeeName} profile picture" class="employee-avatar" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop'; this.onerror=null;">
+                            <div class="employee-info">
+                                <h4>${request.employeeName}</h4>
+                                <p>${request.department} • ${request.employeeId}</p>
+                            </div>
+                        </div>
+                        ${getStatusBadge(request.status)}
+                    </div>
+                    <div class="request-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Leave Type</span>
+                            <span class="detail-value">${getLeaveTypeLabel(request.type)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Duration</span>
+                            <span class="detail-value">${formatDate(request.startDate)} - ${formatDate(request.endDate)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Days</span>
+                            <span class="detail-value">${request.days} days</span>
+                        </div>
+                    </div>
+                    <div class="request-reason">
+                        <strong>Reason:</strong> ${request.reason}
+                    </div>
+                    <div class="request-actions">
+                        <button class="action-btn approve" onclick="openCommentModal('approve', ${request.id})">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Approve
+                        </button>
+                        <button class="action-btn reject" onclick="openCommentModal('reject', ${request.id})">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Reject
+                        </button>
+                        <button class="action-btn view" onclick="viewAdminLeaveDetails(${request.id})">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Render admin leave history
+        function renderAdminLeaveHistory() {
+            const tbody = document.getElementById('adminLeaveHistoryBody');
+            const filteredHistory = mockAllLeaveRequests.filter(leave => {
+                if (currentAdminFilter === 'all') return true;
+                return leave.status === currentAdminFilter;
+            });
+            
+            if (filteredHistory.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <h3>No Leave Requests Found</h3>
+                                <p>No leave requests match your current filter</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = filteredHistory.map(leave => {
+                const statusBadge = getStatusBadge(leave.status);
+                const typeLabel = getLeaveTypeLabel(leave.type);
+                const actions = leave.status === 'pending' ? `
+                    <button class="action-btn approve" onclick="openCommentModal('approve', ${leave.id})">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Approve
+                    </button>
+                    <button class="action-btn reject" onclick="openCommentModal('reject', ${leave.id})">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Reject
+                    </button>
+                ` : `
+                    <button class="action-btn view" onclick="viewAdminLeaveDetails(${leave.id})">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        View
+                    </button>
+                `;
+                
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <img src="${leave.employeeAvatar}" alt="${leave.employeeName} profile picture" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop'; this.onerror=null;">
+                                <div>
+                                    <div style="font-weight: 600;">${leave.employeeName}</div>
+                                    <div style="font-size: 0.75rem; color: #6B7280;">${leave.department}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${typeLabel}</td>
+                        <td>${formatDate(leave.startDate)}</td>
+                        <td>${formatDate(leave.endDate)}</td>
+                        <td>${leave.days}</td>
+                        <td>${statusBadge}</td>
+                        <td>${formatDate(leave.appliedOn)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                ${actions}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // Handle leave application submit
+        function handleLeaveSubmit(e) {
+            e.preventDefault();
+            
+            const formData = {
+                type: document.getElementById('leaveType').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                reason: document.getElementById('leaveReason').value
+            };
+            
+            // Validate dates
+            if (new Date(formData.startDate) > new Date(formData.endDate)) {
+                showToast('End date must be after start date', 'error');
+                return;
+            }
+            
+            // Calculate days
+            const days = calculateDays(formData.startDate, formData.endDate);
+            
+            // Check leave balance
+            const balance = mockLeaveBalance[formData.type];
+            if (days > balance.available) {
+                showToast(`Insufficient ${getLeaveTypeLabel(formData.type)} balance. Available: ${balance.available} days`, 'error');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingOverlay').classList.add('show');
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Add new leave request
+                const newLeave = {
+                    id: mockLeaveHistory.length + 1,
+                    ...formData,
+                    days: days,
+                    status: 'pending',
+                    appliedOn: new Date().toISOString().split('T')[0],
+                    adminComment: ''
+                };
+                
+                mockLeaveHistory.unshift(newLeave);
+                
+                // Update balance
+                mockLeaveBalance[formData.type].available -= days;
+                
+                // Hide loading
+                document.getElementById('loadingOverlay').classList.remove('show');
+                
+                // Show success message
+                showToast('Leave request submitted successfully!', 'success');
+                
+                // Reset form
+                resetForm();
+                
+                // Refresh views
+                renderLeaveBalance();
+                renderLeaveHistory();
+            }, 1500);
+        }
+        
+        // Handle comment modal submit
+        function handleCommentSubmit(e) {
+            e.preventDefault();
+            
+            const comment = document.getElementById('adminComment').value;
+            
+            // Show loading
+            document.getElementById('loadingOverlay').classList.add('show');
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Update request status
+                const request = mockAllLeaveRequests.find(r => r.id === currentRequestId);
+                if (request) {
+                    request.status = currentAction === 'approve' ? 'approved' : 'rejected';
+                    request.adminComment = comment;
+                }
+                
+                // Hide loading
+                document.getElementById('loadingOverlay').classList.remove('show');
+                
+                // Close modal
+                closeCommentModal();
+                
+                // Show success message
+                const message = currentAction === 'approve' 
+                    ? 'Leave request approved successfully!' 
+                    : 'Leave request rejected successfully!';
+                showToast(message, 'success');
+                
+                // Refresh views
+                renderPendingRequests();
+                renderAdminLeaveHistory();
+            }, 1500);
+        }
+        
+        // Open comment modal
+        function openCommentModal(action, requestId) {
+            currentAction = action;
+            currentRequestId = requestId;
+            
+            const modalTitle = action === 'approve' ? 'Approve Leave Request' : 'Reject Leave Request';
+            document.getElementById('modalTitle').textContent = modalTitle;
+            document.getElementById('adminComment').value = '';
+            document.getElementById('commentCharCount').textContent = '0 / 500';
+            
+            document.getElementById('commentModal').classList.add('show');
+        }
+        
+        // Close comment modal
+        function closeCommentModal() {
+            document.getElementById('commentModal').classList.remove('show');
+            currentAction = null;
+            currentRequestId = null;
+        }
+        
+        // View leave details
+        function viewLeaveDetails(id) {
+            const leave = mockLeaveHistory.find(l => l.id === id);
+            if (!leave) return;
+            
+            alert(`Leave Details:\n\nType: ${getLeaveTypeLabel(leave.type)}\nStart Date: ${formatDate(leave.startDate)}\nEnd Date: ${formatDate(leave.endDate)}\nDays: ${leave.days}\nStatus: ${leave.status}\nReason: ${leave.reason}\n${leave.adminComment ? 'Admin Comment: ' + leave.adminComment : ''}`);
+        }
+        
+        // View admin leave details
+        function viewAdminLeaveDetails(id) {
+            const leave = mockAllLeaveRequests.find(l => l.id === id);
+            if (!leave) return;
+            
+            alert(`Leave Details:\n\nEmployee: ${leave.employeeName}\nDepartment: ${leave.department}\nType: ${getLeaveTypeLabel(leave.type)}\nStart Date: ${formatDate(leave.startDate)}\nEnd Date: ${formatDate(leave.endDate)}\nDays: ${leave.days}\nStatus: ${leave.status}\nReason: ${leave.reason}\n${leave.adminComment ? 'Admin Comment: ' + leave.adminComment : ''}`);
+        }
+        
+        // Switch view (employee/admin)
+        function switchView(view) {
+            currentView = view;
+            
+            // Update toggle buttons
+            const buttons = document.querySelectorAll('.role-toggle button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Toggle views
+            if (view === 'employee') {
+                document.getElementById('employeeView').classList.remove('hidden');
+                document.getElementById('adminView').classList.remove('active');
+            } else {
+                document.getElementById('employeeView').classList.add('hidden');
+                document.getElementById('adminView').classList.add('active');
+            }
+        }
+        
+        // Filter by status
+        function filterByStatus(status) {
+            currentFilter = status;
+            
+            // Update filter buttons
+            const buttons = document.querySelectorAll('#employeeView .filter-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            renderLeaveHistory();
+        }
+        
+        // Filter admin by status
+        function filterAdminByStatus(status) {
+            currentAdminFilter = status;
+            
+            // Update filter buttons
+            const buttons = document.querySelectorAll('#adminView .filter-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            renderAdminLeaveHistory();
+        }
+        
+        // Handle search
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#leaveHistoryBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+        
+        // Handle admin search
+        function handleAdminSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#adminLeaveHistoryBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+        
+        // Sort table
+        function sortTable(column) {
+            // Implementation for sorting
+            console.log('Sorting by:', column);
+        }
+        
+        // Sort admin table
+        function sortAdminTable(column) {
+            // Implementation for sorting
+            console.log('Sorting admin table by:', column);
+        }
+        
+        // Validate dates
+        function validateDates() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (startDate && endDate) {
+                if (new Date(startDate) > new Date(endDate)) {
+                    document.getElementById('endDate').setCustomValidity('End date must be after start date');
+                } else {
+                    document.getElementById('endDate').setCustomValidity('');
+                }
+            }
+        }
+        
+        // Update character count
+        function updateCharCount(e) {
+            const count = e.target.value.length;
+            const charCount = document.getElementById('reasonCharCount');
+            charCount.textContent = `${count} / 500`;
+            
+            if (count > 450) {
+                charCount.classList.add('danger');
+                charCount.classList.remove('warning');
+            } else if (count > 400) {
+                charCount.classList.add('warning');
+                charCount.classList.remove('danger');
+            } else {
+                charCount.classList.remove('warning', 'danger');
+            }
+        }
+        
+        // Update comment character count
+        function updateCommentCharCount(e) {
+            const count = e.target.value.length;
+            const charCount = document.getElementById('commentCharCount');
+            charCount.textContent = `${count} / 500`;
+            
+            if (count > 450) {
+                charCount.classList.add('danger');
+                charCount.classList.remove('warning');
+            } else if (count > 400) {
+                charCount.classList.add('warning');
+                charCount.classList.remove('danger');
+            } else {
+                charCount.classList.remove('warning', 'danger');
+            }
+        }
+        
+        // Reset form
+        function resetForm() {
+            document.getElementById('leaveApplicationForm').reset();
+            document.getElementById('reasonCharCount').textContent = '0 / 500';
+            document.getElementById('reasonCharCount').classList.remove('warning', 'danger');
+        }
+        
+        // Calculate days between dates
+        function calculateDays(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            return diffDays;
+        }
+        
+        // Get status badge HTML
+        function getStatusBadge(status) {
+            const badges = {
+                pending: '<span class="status-badge pending"><span class="status-dot"></span>Pending</span>',
+                approved: '<span class="status-badge approved"><span class="status-dot"></span>Approved</span>',
+                rejected: '<span class="status-badge rejected"><span class="status-dot"></span>Rejected</span>'
+            };
+            return badges[status] || '';
+        }
+        
+        // Get leave type label
+        function getLeaveTypeLabel(type) {
+            const labels = {
+                paid: 'Paid Leave',
+                sick: 'Sick Leave',
+                unpaid: 'Unpaid Leave'
+            };
+            return labels[type] || type;
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = `toast ${type} show`;
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toastIcon.className = 'toast-icon success';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            } else {
+                toastIcon.className = 'toast-icon error';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Go back to dashboard
+        function goBack() {
+            const userRole = localStorage.getItem('userRole');
+            if (userRole === 'admin') {
+                window.location.href = 'admin_dashboard.html';
+            } else {
+                window.location.href = 'employee_dashboard.html';
+            }
+        }
+        
+        // Close modal on outside click
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('commentModal');
+            if (e.target === modal) {
+                closeCommentModal();
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

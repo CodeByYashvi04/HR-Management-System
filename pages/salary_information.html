@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dayflow HRMS - Salary Information and Management">
+    <title>Salary Information - Dayflow HRMS</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        /* Additional custom styles for salary information page */
+        .salary-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        }
+        
+        .header {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563EB;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover {
+            color: #2563EB;
+        }
+        
+        .nav-link.active {
+            color: #2563EB;
+            font-weight: 600;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .main-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: #6B7280;
+            font-size: 1rem;
+        }
+        
+        .role-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .role-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: #6B7280;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .role-tab:hover {
+            color: #2563EB;
+        }
+        
+        .role-tab.active {
+            color: #2563EB;
+            border-bottom-color: #2563EB;
+        }
+        
+        .role-content {
+            display: none;
+        }
+        
+        .role-content.active {
+            display: block;
+        }
+        
+        .salary-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .salary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .salary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .salary-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .salary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .salary-icon.primary {
+            background: #EFF6FF;
+            color: #2563EB;
+        }
+        
+        .salary-icon.success {
+            background: #ECFDF5;
+            color: #059669;
+        }
+        
+        .salary-icon.warning {
+            background: #FFFBEB;
+            color: #D97706;
+        }
+        
+        .salary-icon.error {
+            background: #FEF2F2;
+            color: #DC2626;
+        }
+        
+        .salary-label {
+            font-size: 0.875rem;
+            color: #6B7280;
+            font-weight: 500;
+        }
+        
+        .salary-amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        
+        .salary-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .salary-change.positive {
+            color: #059669;
+        }
+        
+        .salary-change.negative {
+            color: #DC2626;
+        }
+        
+        .breakdown-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+        
+        .breakdown-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #F9FAFB;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .breakdown-item:hover {
+            background: #F3F4F6;
+        }
+        
+        .breakdown-label {
+            color: #6B7280;
+            font-weight: 500;
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+            color: #1F2937;
+            font-size: 1.125rem;
+        }
+        
+        .breakdown-total {
+            border-top: 2px solid #E5E7EB;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .breakdown-total .breakdown-label {
+            color: #1F2937;
+            font-weight: 600;
+        }
+        
+        .breakdown-total .breakdown-value {
+            color: #2563EB;
+            font-size: 1.5rem;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .history-table thead {
+            background: #F9FAFB;
+        }
+        
+        .history-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #6B7280;
+            font-size: 0.875rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .history-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            color: #1F2937;
+        }
+        
+        .history-table tbody tr:hover {
+            background: #F9FAFB;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .admin-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding-left: 3rem;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6B7280;
+        }
+        
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .employee-salary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .employee-salary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .employee-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        .employee-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .employee-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .employee-info p {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+        
+        .employee-salary-details {
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .salary-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .salary-detail-label {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+        
+        .salary-detail-value {
+            font-weight: 600;
+            color: #1F2937;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #6B7280;
+            transition: color 0.2s;
+        }
+        
+        .close-btn:hover {
+            color: #DC2626;
+        }
+        
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 300;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.show {
+            display: flex;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10B981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #DC2626;
+        }
+        
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .toast-icon.success {
+            color: #10B981;
+        }
+        
+        .toast-icon.error {
+            color: #DC2626;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2563EB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .role-tabs {
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+            
+            .role-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .salary-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .employee-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-controls {
+                flex-direction: column;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+            }
+            
+            .history-table {
+                font-size: 0.875rem;
+            }
+            
+            .history-table th,
+            .history-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+  
+  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fdayflowhr3542back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"></script>
+  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2"></script>
+  </head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg class="toast-icon" id="toastIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toastMessage"></span>
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo-icon">D</div>
+                <span class="logo-text">Dayflow HRMS</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="employee_dashboard.html" class="nav-link">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="attendance_management.html" class="nav-link">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Attendance
+                </a>
+                <a href="leave_management.html" class="nav-link">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Leave
+                </a>
+                <a href="salary_information.html" class="nav-link active">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Salary
+                </a>
+            </nav>
+            
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">JD</div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="salary-container">
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Salary Information</h1>
+                <p class="page-subtitle">View and manage compensation details</p>
+            </div>
+            
+            <!-- Role Tabs -->
+            <div class="role-tabs">
+                <button class="role-tab active" data-role="employee">Employee View</button>
+                <button class="role-tab" data-role="admin">Admin View</button>
+            </div>
+            
+            <!-- Employee View -->
+            <div class="role-content active" id="employeeView">
+                <!-- Salary Overview Cards -->
+                <div class="salary-overview">
+                    <div class="salary-card">
+                        <div class="salary-card-header">
+                            <div class="salary-icon primary">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="salary-label">Net Salary</div>
+                                <div class="salary-amount" id="netSalary">$0</div>
+                            </div>
+                        </div>
+                        <div class="salary-change positive">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                            </svg>
+                            <span>Last updated: January 2026</span>
+                        </div>
+                    </div>
+                    
+                    <div class="salary-card">
+                        <div class="salary-card-header">
+                            <div class="salary-icon success">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="salary-label">Basic Salary</div>
+                                <div class="salary-amount" id="basicSalary">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="salary-card">
+                        <div class="salary-card-header">
+                            <div class="salary-icon warning">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="salary-label">Total Allowances</div>
+                                <div class="salary-amount" id="totalAllowances">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="salary-card">
+                        <div class="salary-card-header">
+                            <div class="salary-icon error">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="salary-label">Total Deductions</div>
+                                <div class="salary-amount" id="totalDeductions">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Salary Breakdown -->
+                <div class="breakdown-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Salary Breakdown</h2>
+                        <button class="btn btn-outline" onclick="exportSalaryBreakdown()">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Export
+                        </button>
+                    </div>
+                    
+                    <div class="breakdown-grid">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Basic Salary</span>
+                            <span class="breakdown-value" id="breakdownBasic">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Housing Allowance</span>
+                            <span class="breakdown-value" id="housingAllowance">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Transport Allowance</span>
+                            <span class="breakdown-value" id="transportAllowance">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Medical Allowance</span>
+                            <span class="breakdown-value" id="medicalAllowance">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Tax Deduction</span>
+                            <span class="breakdown-value" id="taxDeduction">-$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Insurance Deduction</span>
+                            <span class="breakdown-value" id="insuranceDeduction">-$0</span>
+                        </div>
+                        <div class="breakdown-item breakdown-total">
+                            <span class="breakdown-label">Net Monthly Salary</span>
+                            <span class="breakdown-value" id="breakdownNet">$0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Salary History -->
+                <div class="breakdown-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Salary History</h2>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <div class="filter-group">
+                            <label class="label">From Date</label>
+                            <input type="date" class="input" id="historyFromDate">
+                        </div>
+                        <div class="filter-group">
+                            <label class="label">To Date</label>
+                            <input type="date" class="input" id="historyToDate">
+                        </div>
+                        <div class="filter-group" style="display: flex; align-items: flex-end;">
+                            <button class="btn btn-primary" onclick="filterHistory()">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                </svg>
+                                Filter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Basic Salary</th>
+                                    <th>Allowances</th>
+                                    <th>Deductions</th>
+                                    <th>Net Salary</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- History rows will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin View -->
+            <div class="role-content" id="adminView">
+                <!-- Admin Controls -->
+                <div class="admin-controls">
+                    <div class="search-box">
+                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" class="input" placeholder="Search employees..." id="employeeSearch">
+                    </div>
+                    <button class="btn btn-primary" onclick="openSalaryModal()">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add Salary
+                    </button>
+                </div>
+                
+                <!-- Employee Salary Grid -->
+                <div class="employee-grid" id="employeeGrid">
+                    <!-- Employee cards will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Salary Modal -->
+    <div class="modal-overlay" id="salaryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add Salary Information</h2>
+                <button class="close-btn" onclick="closeSalaryModal()">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="salaryForm" class="form-grid">
+                <input type="hidden" id="employeeId">
+                
+                <div>
+                    <label class="label">Employee</label>
+                    <select class="input" id="modalEmployeeSelect" required>
+                        <option value="">Select Employee</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label class="label">Basic Salary ($)</label>
+                        <input type="number" class="input" id="modalBasicSalary" placeholder="5000" required min="0" step="0.01">
+                    </div>
+                    <div>
+                        <label class="label">Effective Date</label>
+                        <input type="date" class="input" id="modalEffectiveDate" required>
+                    </div>
+                </div>
+                
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1F2937; margin-top: 1rem;">Allowances</h3>
+                
+                <div class="form-row">
+                    <div>
+                        <label class="label">Housing Allowance ($)</label>
+                        <input type="number" class="input" id="modalHousingAllowance" placeholder="1000" min="0" step="0.01">
+                    </div>
+                    <div>
+                        <label class="label">Transport Allowance ($)</label>
+                        <input type="number" class="input" id="modalTransportAllowance" placeholder="500" min="0" step="0.01">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label class="label">Medical Allowance ($)</label>
+                        <input type="number" class="input" id="modalMedicalAllowance" placeholder="300" min="0" step="0.01">
+                    </div>
+                    <div>
+                        <label class="label">Other Allowances ($)</label>
+                        <input type="number" class="input" id="modalOtherAllowances" placeholder="200" min="0" step="0.01">
+                    </div>
+                </div>
+                
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1F2937; margin-top: 1rem;">Deductions</h3>
+                
+                <div class="form-row">
+                    <div>
+                        <label class="label">Tax Deduction ($)</label>
+                        <input type="number" class="input" id="modalTaxDeduction" placeholder="800" min="0" step="0.01">
+                    </div>
+                    <div>
+                        <label class="label">Insurance Deduction ($)</label>
+                        <input type="number" class="input" id="modalInsuranceDeduction" placeholder="200" min="0" step="0.01">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="label">Other Deductions ($)</label>
+                    <input type="number" class="input" id="modalOtherDeductions" placeholder="100" min="0" step="0.01">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        Save Salary Information
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeSalaryModal()" style="flex: 1;">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Mock data for employees and salaries
+        const mockEmployees = [
+            {
+                id: 'EMP001',
+                name: 'John Doe',
+                email: 'john.doe@dayflow.com',
+                department: 'Engineering',
+                designation: 'Senior Developer',
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop'
+            },
+            {
+                id: 'EMP002',
+                name: 'Jane Smith',
+                email: 'jane.smith@dayflow.com',
+                department: 'Marketing',
+                designation: 'Marketing Manager',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop'
+            },
+            {
+                id: 'EMP003',
+                name: 'Michael Johnson',
+                email: 'michael.j@dayflow.com',
+                department: 'Sales',
+                designation: 'Sales Executive',
+                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop'
+            },
+            {
+                id: 'EMP004',
+                name: 'Emily Davis',
+                email: 'emily.d@dayflow.com',
+                department: 'HR',
+                designation: 'HR Specialist',
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop'
+            }
+        ];
+        
+        const mockSalaries = {
+            'EMP001': {
+                basicSalary: 5000,
+                housingAllowance: 1000,
+                transportAllowance: 500,
+                medicalAllowance: 300,
+                otherAllowances: 200,
+                taxDeduction: 800,
+                insuranceDeduction: 200,
+                otherDeductions: 100,
+                effectiveDate: '2026-01-01',
+                history: [
+                    { month: 'December 2025', basic: 5000, allowances: 2000, deductions: 1100, net: 5900, status: 'Paid' },
+                    { month: 'November 2025', basic: 5000, allowances: 2000, deductions: 1100, net: 5900, status: 'Paid' },
+                    { month: 'October 2025', basic: 4800, allowances: 1900, deductions: 1050, net: 5650, status: 'Paid' }
+                ]
+            },
+            'EMP002': {
+                basicSalary: 4500,
+                housingAllowance: 900,
+                transportAllowance: 450,
+                medicalAllowance: 250,
+                otherAllowances: 150,
+                taxDeduction: 700,
+                insuranceDeduction: 180,
+                otherDeductions: 80,
+                effectiveDate: '2026-01-01'
+            },
+            'EMP003': {
+                basicSalary: 4000,
+                housingAllowance: 800,
+                transportAllowance: 400,
+                medicalAllowance: 200,
+                otherAllowances: 100,
+                taxDeduction: 600,
+                insuranceDeduction: 150,
+                otherDeductions: 50,
+                effectiveDate: '2026-01-01'
+            },
+            'EMP004': {
+                basicSalary: 3800,
+                housingAllowance: 750,
+                transportAllowance: 380,
+                medicalAllowance: 190,
+                otherAllowances: 80,
+                taxDeduction: 550,
+                insuranceDeduction: 140,
+                otherDeductions: 50,
+                effectiveDate: '2026-01-01'
+            }
+        };
+        
+        // Get current user from localStorage
+        let currentUser = null;
+        let currentRole = 'employee';
+        
+        // Initialize page
+        window.addEventListener('load', function() {
+            // Check authentication
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get user info
+            try {
+                const userData = JSON.parse(atob(token));
+                currentUser = userData;
+                currentRole = userData.role || 'employee';
+                
+                // Update user avatar
+                const userAvatar = document.getElementById('userAvatar');
+                if (userAvatar && userData.name) {
+                    const initials = userData.name.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                // Show appropriate view based on role
+                if (currentRole === 'admin') {
+                    document.querySelector('[data-role="admin"]').click();
+                }
+                
+                // Load data
+                loadEmployeeSalaryData();
+                loadAdminSalaryData();
+                populateEmployeeSelect();
+                
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Role tab switching
+        document.querySelectorAll('.role-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const role = this.dataset.role;
+                
+                // Update active tab
+                document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.role-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(role + 'View').classList.add('active');
+            });
+        });
+        
+        // Load employee salary data
+        function loadEmployeeSalaryData() {
+            const userId = currentUser.userId || 'EMP001';
+            const salaryData = mockSalaries[userId];
+            
+            if (!salaryData) return;
+            
+            // Calculate totals
+            const totalAllowances = (salaryData.housingAllowance || 0) + 
+                                   (salaryData.transportAllowance || 0) + 
+                                   (salaryData.medicalAllowance || 0) + 
+                                   (salaryData.otherAllowances || 0);
+            
+            const totalDeductions = (salaryData.taxDeduction || 0) + 
+                                   (salaryData.insuranceDeduction || 0) + 
+                                   (salaryData.otherDeductions || 0);
+            
+            const netSalary = salaryData.basicSalary + totalAllowances - totalDeductions;
+            
+            // Update overview cards
+            document.getElementById('netSalary').textContent = formatCurrency(netSalary);
+            document.getElementById('basicSalary').textContent = formatCurrency(salaryData.basicSalary);
+            document.getElementById('totalAllowances').textContent = formatCurrency(totalAllowances);
+            document.getElementById('totalDeductions').textContent = formatCurrency(totalDeductions);
+            
+            // Update breakdown
+            document.getElementById('breakdownBasic').textContent = formatCurrency(salaryData.basicSalary);
+            document.getElementById('housingAllowance').textContent = formatCurrency(salaryData.housingAllowance || 0);
+            document.getElementById('transportAllowance').textContent = formatCurrency(salaryData.transportAllowance || 0);
+            document.getElementById('medicalAllowance').textContent = formatCurrency(salaryData.medicalAllowance || 0);
+            document.getElementById('taxDeduction').textContent = '-' + formatCurrency(salaryData.taxDeduction || 0);
+            document.getElementById('insuranceDeduction').textContent = '-' + formatCurrency(salaryData.insuranceDeduction || 0);
+            document.getElementById('breakdownNet').textContent = formatCurrency(netSalary);
+            
+            // Load history
+            loadSalaryHistory(salaryData.history || []);
+        }
+        
+        // Load salary history
+        function loadSalaryHistory(history) {
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = '';
+            
+            if (history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #6B7280;">No salary history available</td></tr>';
+                return;
+            }
+            
+            history.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.month}</td>
+                    <td>${formatCurrency(record.basic)}</td>
+                    <td>${formatCurrency(record.allowances)}</td>
+                    <td>${formatCurrency(record.deductions)}</td>
+                    <td style="font-weight: 600; color: #2563EB;">${formatCurrency(record.net)}</td>
+                    <td><span class="badge badge-success">${record.status}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Load admin salary data
+        function loadAdminSalaryData() {
+            const grid = document.getElementById('employeeGrid');
+            grid.innerHTML = '';
+            
+            mockEmployees.forEach(employee => {
+                const salaryData = mockSalaries[employee.id];
+                if (!salaryData) return;
+                
+                const totalAllowances = (salaryData.housingAllowance || 0) + 
+                                       (salaryData.transportAllowance || 0) + 
+                                       (salaryData.medicalAllowance || 0) + 
+                                       (salaryData.otherAllowances || 0);
+                
+                const totalDeductions = (salaryData.taxDeduction || 0) + 
+                                       (salaryData.insuranceDeduction || 0) + 
+                                       (salaryData.otherDeductions || 0);
+                
+                const netSalary = salaryData.basicSalary + totalAllowances - totalDeductions;
+                
+                const card = document.createElement('div');
+                card.className = 'employee-salary-card';
+                card.innerHTML = `
+                    <div class="employee-header">
+                        <img src="${employee.avatar}" alt="${employee.name} profile picture" class="employee-avatar" 
+                             onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop'; this.onerror=null;">
+                        <div class="employee-info">
+                            <h3>${employee.name}</h3>
+                            <p>${employee.designation} • ${employee.department}</p>
+                        </div>
+                    </div>
+                    <div class="employee-salary-details">
+                        <div class="salary-detail-row">
+                            <span class="salary-detail-label">Basic Salary</span>
+                            <span class="salary-detail-value">${formatCurrency(salaryData.basicSalary)}</span>
+                        </div>
+                        <div class="salary-detail-row">
+                            <span class="salary-detail-label">Allowances</span>
+                            <span class="salary-detail-value">${formatCurrency(totalAllowances)}</span>
+                        </div>
+                        <div class="salary-detail-row">
+                            <span class="salary-detail-label">Deductions</span>
+                            <span class="salary-detail-value">${formatCurrency(totalDeductions)}</span>
+                        </div>
+                        <div class="salary-detail-row" style="padding-top: 0.75rem; border-top: 1px solid #E5E7EB; margin-top: 0.75rem;">
+                            <span class="salary-detail-label" style="font-weight: 600; color: #1F2937;">Net Salary</span>
+                            <span class="salary-detail-value" style="color: #2563EB; font-size: 1.125rem;">${formatCurrency(netSalary)}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button class="btn btn-outline" style="flex: 1;" onclick="editSalary('${employee.id}')">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                            Edit
+                        </button>
+                        <button class="btn btn-ghost" onclick="viewSalaryDetails('${employee.id}')">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // Populate employee select
+        function populateEmployeeSelect() {
+            const select = document.getElementById('modalEmployeeSelect');
+            select.innerHTML = '<option value="">Select Employee</option>';
+            
+            mockEmployees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.textContent = `${employee.name} (${employee.id})`;
+                select.appendChild(option);
+            });
+        }
+        
+        // Open salary modal
+        function openSalaryModal(employeeId = null) {
+            const modal = document.getElementById('salaryModal');
+            const form = document.getElementById('salaryForm');
+            const title = document.getElementById('modalTitle');
+            
+            form.reset();
+            
+            if (employeeId) {
+                title.textContent = 'Edit Salary Information';
+                document.getElementById('employeeId').value = employeeId;
+                
+                const salaryData = mockSalaries[employeeId];
+                if (salaryData) {
+                    document.getElementById('modalEmployeeSelect').value = employeeId;
+                    document.getElementById('modalBasicSalary').value = salaryData.basicSalary;
+                    document.getElementById('modalEffectiveDate').value = salaryData.effectiveDate;
+                    document.getElementById('modalHousingAllowance').value = salaryData.housingAllowance || 0;
+                    document.getElementById('modalTransportAllowance').value = salaryData.transportAllowance || 0;
+                    document.getElementById('modalMedicalAllowance').value = salaryData.medicalAllowance || 0;
+                    document.getElementById('modalOtherAllowances').value = salaryData.otherAllowances || 0;
+                    document.getElementById('modalTaxDeduction').value = salaryData.taxDeduction || 0;
+                    document.getElementById('modalInsuranceDeduction').value = salaryData.insuranceDeduction || 0;
+                    document.getElementById('modalOtherDeductions').value = salaryData.otherDeductions || 0;
+                }
+            } else {
+                title.textContent = 'Add Salary Information';
+                // Set default effective date to current month
+                const today = new Date();
+                document.getElementById('modalEffectiveDate').value = today.toISOString().split('T')[0];
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        // Close salary modal
+        function closeSalaryModal() {
+            document.getElementById('salaryModal').classList.remove('show');
+        }
+        
+        // Edit salary
+        function editSalary(employeeId) {
+            openSalaryModal(employeeId);
+        }
+        
+        // View salary details
+        function viewSalaryDetails(employeeId) {
+            showToast('Viewing detailed salary information for ' + employeeId, 'success');
+        }
+        
+        // Handle salary form submission
+        document.getElementById('salaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.add('show');
+            
+            // Simulate API call
+            setTimeout(() => {
+                loadingOverlay.classList.remove('show');
+                closeSalaryModal();
+                showToast('Salary information saved successfully!', 'success');
+                
+                // Reload data
+                loadAdminSalaryData();
+            }, 1500);
+        });
+        
+        // Filter history
+        function filterHistory() {
+            const fromDate = document.getElementById('historyFromDate').value;
+            const toDate = document.getElementById('historyToDate').value;
+            
+            if (!fromDate || !toDate) {
+                showToast('Please select both from and to dates', 'error');
+                return;
+            }
+            
+            showToast('Filtering salary history...', 'success');
+        }
+        
+        // Export salary breakdown
+        function exportSalaryBreakdown() {
+            showToast('Exporting salary breakdown...', 'success');
+        }
+        
+        // Search employees
+        document.getElementById('employeeSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.employee-salary-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const designation = card.querySelector('p').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || designation.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = `toast ${type} show`;
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toastIcon.className = 'toast-icon success';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            } else {
+                toastIcon.className = 'toast-icon error';
+                toastIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // User avatar click
+        document.getElementById('userAvatar').addEventListener('click', function() {
+            if (confirm('Do you want to logout?')) {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const navMenu = document.querySelector('.nav-menu');
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+        
+        // Close modal on overlay click
+        document.getElementById('salaryModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSalaryModal();
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
